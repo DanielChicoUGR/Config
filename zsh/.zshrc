@@ -58,6 +58,8 @@ PATH=/home/daniel/Android/tools:/home/daniel/Android/tools/bin:/usr/lib/dart/bin
 source /home/daniel/.repos/configuraciones/zsh/.aliases
 
 
+export CHROME_EXECUTABLE="/usr/bin/opera"
+
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Plugins

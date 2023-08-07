@@ -14,7 +14,7 @@ alias lld='exa --icons -lh -s modified'
 alias llad='exa --icons -lha -s modified'
 
 
-alias cat='bat'
+alias cat='batcat'
 alias icat="kitty +kitten icat"
 # alias remove_mysql_root='/home/dachival/Proyectos/Scripts/rm_mysql.sh'
 
