@@ -21,7 +21,7 @@ alias icat="kitty +kitten icat"
 
 alias python="python3"
 alias vim="/home/daniel/.appimage/neovim.appimage"
-
+alias emacs="macsclient -c -a 'emacs'"
 
 alias grub-update='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 

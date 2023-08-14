@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Obsidian
-Exec=/home/daniel/.appimage/obsidian.AppImage %u
+Exec=/home/daniel/.appimage/obsidian.AppImage
 Terminal=false
 Type=Application
 Icon=/home/daniel/.repos/configuraciones/desktopEntries/icons/obsidian.png

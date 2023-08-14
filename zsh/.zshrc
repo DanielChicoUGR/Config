@@ -54,7 +54,6 @@ PATH=/home/daniel/Android/tools:/home/daniel/Android/tools/bin:/usr/lib/dart/bin
 
 # Manual aliases
 
-
 source /home/daniel/.repos/configuraciones/zsh/.aliases
 
 
