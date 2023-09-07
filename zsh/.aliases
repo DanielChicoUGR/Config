@@ -5,11 +5,11 @@
 
 alias ll='exa --icons -lh --group-directories-first'
 alias la='exa --icons -lgha --group-directories-first'
-alias l='exa --group-directories-first'
-alias lla='exa -lha --group-directories-first'
+alias l='exa --icons --group-directories-first'
+alias lla='exa --icons -lha --group-directories-first'
 alias ls='exa --icons --group-directories-first'
 alias lt='exa --icons --tree'
-alias lta='exa -lgha --tree'
+alias lta='exa -lgha --incons --tree'
 alias lld='exa --icons -lh -s modified'
 alias llad='exa --icons -lha -s modified'
 

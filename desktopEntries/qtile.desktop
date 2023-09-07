@@ -1,6 +1,8 @@
 [Desktop Entry]
-Name=Qtile
-Comment=Qtile Session
-Exec=qtile start
+Name=qtile
+Comment=Python Based Windown Manager
+TryExex=qtile
+Exec=/home/daniel/.local/bin/qtile start
 Type=Application
-Keywords=wm;tiling
+DesktopNames=qtile
+Keywords=tiling;wm;windowmanager;desktop;session;

@@ -46,7 +46,7 @@ keys = [
 
     #terminal (Return=enter)
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    key([mod, "shift"], "Return", lazy.run_extension(extension.DmenuRun(
+    Key([mod, "shift"], "Return", lazy.run_extension(extension.DmenuRun(
         dmenu_prompt=">",
         dmenu_font="Andika-8",
         background="#15181a",

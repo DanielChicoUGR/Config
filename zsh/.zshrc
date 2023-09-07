@@ -50,7 +50,7 @@ source /home/daniel/.repos/powerlevel10k/powerlevel10k.zsh-theme
 
 # Manual configuration
 
-PATH=/home/daniel/Android/tools:/home/daniel/Android/tools/bin:/usr/lib/dart/bin:/home/daniel/.local/bin:/root/.local/bin:/snap/bin:/usr/sandbox/:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/daniel/.config/emacs/bin
+source /home/daniel/.repos/configuraciones/zsh/.path
 
 # Manual aliases
 
@@ -71,14 +71,6 @@ source /usr/share/zsh-sudo/sudo.plugin.zsh
 
 
 
-#RUST lenguaje
-
-source /home/daniel/.cargo/env
-
-# dart lenguaje
-
-# echo 'export PATH="$PATH:/usr/lib/dart/bin"' >> ~/.profile
-export PATH="$PATH:/usr/lib/dart/bin"
 
 
 # Functions

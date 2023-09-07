@@ -18,14 +18,12 @@ picom &
 
 # env LD_PRELOAD=/usr/local/lib/spotify-adblock.so spotify %U &
 # /usr/bin/emacs --daemon &
+keyboard_ingles.sh &
 killall conky
 sleep 2 && conky -c "$HOME"/.config/conky/"$COLORSCHEME".conkyrc &
 feh --bg-max --randomize --no-fehbg ~/.wallpaper/* 
 variety &
-# copyq &
-# nm-applet &
-# pamac-tray-icon-plasma &
-# "$HOME"/.screenlayout/layout.sh &
+
 
 ### UNCOMMENT ONLY ONE OF THE FOLLOWING THREE OPTIONS! ###
 # 1. Uncomment to restore last saved wallpaper
