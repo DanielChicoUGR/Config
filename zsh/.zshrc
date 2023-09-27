@@ -50,7 +50,7 @@ source /home/daniel/.repos/powerlevel10k/powerlevel10k.zsh-theme
 
 # Manual configuration
 
-source /home/daniel/.repos/configuraciones/zsh/.path
+# source /home/daniel/.repos/configuraciones/zsh/.path
 
 # Manual aliases
 
@@ -178,5 +178,3 @@ function mkd(){
 
 # Finalize Powerlevel10k instant prompt. Should stay at the bottom of ~/.zshrc.
 (( ! ${+functions[p10k-instant-prompt-finalize]} )) || p10k-instant-prompt-finalize
-
-
