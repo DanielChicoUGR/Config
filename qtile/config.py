@@ -30,6 +30,8 @@ from libqtile import bar, hook, layout, qtile, widget, extension
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 
+from libqtile.utils import send_notification
+
 # Make sure 'qtile-extras' is installed or this config will not work.
 from qtile_extras import widget
 from qtile_extras.widget.decorations import BorderDecoration
@@ -37,6 +39,8 @@ from qtile_extras.widget.decorations import BorderDecoration
 import colors
 
 # Allows you to input a name when adding treetab section.
+
+
 @lazy.layout.function
 def add_treetab_section(layout):
     prompt = qtile.widgets_map["prompt"]
@@ -51,24 +55,29 @@ def double_monitors(qtile):
 @lazy.function
 def keyboardi(qtile):
     subprocess.call([home+'/.config/qtile/keyboard_ingles.sh'])
+    a = send_notification("qtile", "Screens have been reconfigured.")
+    with open(home+'/.config/qtile/log.txt', 'a') as f:
+        f.write(a)
+
 #     # lazy.widget["keyboardlayout"].next_keyboard()
 
 
 @lazy.function
 def keyboarde(qtile):
     subprocess.call([home+'/.config/qtile/keyboard_español.sh'])
+    a = send_notification("qtile", "Screens have been reconfigured.")
+    with open(home+'/.config/qtile/log.txt', 'a') as f:
+        f.write(a)
+
 
 @lazy.functions
 def single_monitor(qtile):
     subprocess.call([home+'/.config/qtile/singlemonitor.sh'])
-    
-
-    
 
 
-# @hook.subscribe.screen_change
-# def screen_change(event):
-    # send_notification("qtile", "Screens have been reconfigured.")
+@hook.subscribe.screen_change
+def screen_change(event):
+    send_notification("qtile", "Screens have been reconfigured.")
 
 
 mod = "mod4"              # Sets mod key to SUPER/WINDOWS
@@ -166,22 +175,22 @@ keys = [
         lazy.layout.shrink().when(layout=["monadtall", "monadwide"]),
         desc="Grow window to the left"
         ),
-    
+
 
     # Grow windows up, down, left, right.  Only works in certain layouts.
     # Works in 'bsp' and 'columns' layout.
     Key([mod, "control"], "h", lazy.layout.grow_left(),
         desc="Grow window to the left"),
-    
+
     Key([mod, "control"], "l", lazy.layout.grow_right(),
         desc="Grow window to the right"),
-    
+
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     Key([mod], "m", lazy.layout.maximize(),
         desc='Toggle between min and max sizes'),
-    
+
     Key([mod], "t", lazy.window.toggle_floating(), desc='toggle floating'),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc='toggle fullscreen'),
 
@@ -204,9 +213,10 @@ keys = [
     # Dmenu scripts launched using the key chord SUPER+p followed by 'key'
     KeyChord([mod], "p", [
         Key([], "h", lazy.spawn("dm-hub -r"), desc='List all dmscripts'),
-        Key([], "a", lazy.spawn("dm-pipewire-out-switcher -r"), desc='Choose ambient sound'),
+        Key([], "a", lazy.spawn("dm-pipewire-out-switcher -r"),
+            desc='Choose ambient sound'),
         Key([], "w", lazy.spawn("dm-wifi -r"), desc='Connect to wifi'),
-        
+
         Key([], "b", lazy.spawn("dm-setbg -r"), desc='Set background'),
         Key([], "c", lazy.spawn("dtos-colorscheme -r"),
             desc='Choose color scheme'),
@@ -226,9 +236,9 @@ keys = [
         Key([], "r", lazy.spawn("qkb -c"), desc='Show Help'),
 
     ]),
-    
 
-    
+
+
     Key(
         [], "XF86AudioRaiseVolume",
         lazy.widget["volume"].increase_vol(),
@@ -239,7 +249,7 @@ keys = [
         lazy.widget["volume"].decrease_vol(),
         desc="Volume down"
     ),
-    
+
     Key(
         [], "XF86AudioMute",
         lazy.widget["volume"].mute(),
@@ -254,7 +264,8 @@ keys = [
     ),
     Key(
         [], "XF86AudioNext",
-        lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"),
+        lazy.spawn(
+            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"),
         desc="Next song"
     ),
     Key(
@@ -264,8 +275,6 @@ keys = [
     ),
 
 ]
-
-
 
 
 groups = []
@@ -308,31 +317,8 @@ for i in groups:
     )
 
 
-def show_keys():
-    key_help = ""
-    for k in keys:
-        mods = ""
-
-        for m in k.modifiers:
-            if m == "mod4":
-                mods += "Super + "
-            else:
-                mods += m.capitalize() + " + "
-
-        if len(k.key) > 1:
-            mods += k.key.capitalize()
-        else:
-            mods += k.key
-
-        key_help += "{:<30} {}".format(mods, k.desc + "\n")
-
-    return key_help
-
-# keys.extend([Key([mod], "F1", lazy.spawn("sh -c 'echo \"" + show_keys() + "\" | rofi -dmenu -i -mesg \"Keyboard shortcuts\"'"), desc="Print keyboard bindings"),])
-# keys.extend([Key([mod], "F1", lazy.spawn(f"sh {home}/.repos/qtile-rofi-keybindings/qtile_kb_rofi.sh"), desc="Print keyboard bindings"),])
-keys.extend([Key([mod], "F1", lazy.spawn("qkb"), desc="Print keyboard bindings"),])
-
-
+keys.extend([Key([mod], "F1", lazy.spawn("qkb"),
+            desc="Print keyboard bindings"),])
 
 
 ### COLORSCHEME ###
@@ -472,7 +458,7 @@ def init_widgets_list():
             foreground=colors[6],
             max_chars=40,
             scroll=True,
-            
+
         ),
         widget.Mpris2(
             name='spotify',
@@ -620,7 +606,8 @@ def init_widgets_screen1():
 
 def init_widgets_screen2():
     widgets_screen2 = init_widgets_list()
-    del widgets_screen2[22:24]
+
+    del widgets_screen2[23:25]
     return widgets_screen2
 
 # For adding transparency to your bar, add (background="#00000000") to the "Screen" line(s)
@@ -628,18 +615,17 @@ def init_widgets_screen2():
 
 
 def init_screens():
-    # if len(qtile.cmd_screens()) == 1:
+    if len(qtile.cmd_screens()) == 1:
+        return Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=26)),
 
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=26)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=26))
-            ]
+    return [
+        Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=70)),
+        Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=70)),
+    ]
 
 
 if __name__ in ["config", "__main__"]:
     screens = init_screens()
-    widgets_list = init_widgets_list()
-    widgets_screen1 = init_widgets_screen1()
-    widgets_screen2 = init_widgets_screen2()
 
 # Drag floating layouts.
 mouse = [
@@ -664,7 +650,7 @@ floating_layout = layout.Floating(
         Match(wm_class="confirmreset"),   # gitk
         Match(wm_class="makebranch"),     # gitk
         Match(wm_class="maketag"),        # gitk
-        Match(wm_class="Android Emulator"), #Mobile Screen Simulator
+        Match(wm_class="Android Emulator"),  # Mobile Screen Simulator
         Match(wm_class="ssh-askpass"),    # ssh-askpass
         Match(title="branchdialog"),      # gitk
         Match(title='Confirmation'),      # tastyworks exit box
@@ -677,6 +663,7 @@ floating_layout = layout.Floating(
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
+
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
@@ -698,7 +685,6 @@ def start_once():
 def restart_on_randr(qtile, ev):
     # commands.reload_screen()
     qtile.cmd_restart()
-
 
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
