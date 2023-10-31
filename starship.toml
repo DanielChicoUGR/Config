@@ -4,6 +4,31 @@
 #[┣─project❯](bold red) $directory$rust$git_branch$git_state$git_status$package$golang$terraform$docker_context$python$docker_context$nodejs
 #[╰─cmd────❯](bold green)
 #"""
+
+format = '$username$hostname$directory$all'
+right_format = """$git_branch\
+$git_state\
+$git_status\
+$rust\
+$cmake\
+$c\
+$package\
+$golang\
+$terraform\
+$docker_context\
+$python$\
+docker_context\
+$nodejs\
+$time
+"""
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bold white"
+# format = '  $time($style)'
+format = '\[  [$time]($style)\]'
+
 [username]
 style_user = "green bold"
 style_root = "red bold"
@@ -12,6 +37,7 @@ disabled = false
 show_always = true
 
 [hostname]
+ssh_symbol = " "
 ssh_only = false
 format = 'on [$hostname](bold purple) '
 trim_at = "."
@@ -34,45 +60,65 @@ discharging_symbol = "⚡"
 #  
 # configure directory
 [directory]
-read_only = " "
-truncation_length = 10
+read_only = " 󰌾 "
+# truncation_length = 10
+truncation_length = 3
+truncation_symbol = "../"
 truncate_to_repo = true    # truncates directory to root folder if in github repo
 style = "bold italic blue"
 
+[directory.substitutions]
+"Documentos" = "󰈙 "
+"Descargas" = " "
+"Música" = " "
+"Imagenes" = " "
+"Público" = "󰈙 "
+"Plantillas" = "󰈙 "
+"Proyectos" = " "
+
 [cmd_duration]
-min_time = 4
+min_time = 10
 show_milliseconds = false
 disabled = false
 style = "bold italic red"
+format = '\[[⏱ $duration]($style)\]'
 
 [aws]
 symbol = "  "
+format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
 
 [conda]
 symbol = " "
+format = '\[[$symbol$environment]($style)\]'
 
 [dart]
 symbol = " "
+format = '\[[$symbol($version)]($style)\]'
 
-#[directory]
-#read_only = " "
+[c]
+symbol = " "
+
+
 
 [docker_context]
 symbol = " "
-format = "via [$symbol$context]($style) "
+format = '\[[$symbol$context]($style)\] '
 style = "blue bold"
 only_with_files = true
 detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
 detect_folders = []
 disabled = false
 #c++ package
+
+
 [elixir]
 symbol = " "
 
 
 [cmake]
 disabled = false
-format = "via [$symbol $version]($style) "
+# format = "via [$symbol $version]($style) "
+format = '\[[$symbol ($version)]($style)\]'
 symbol = "CMAKE"
 style = "bold green"
 
@@ -81,29 +127,33 @@ symbol = " "
 
 [git_branch]
 symbol = " "
+format = '\[[$symbol$branch]($style)\]'
 
 [git_status]
-conflicted = "⚔️ "
-ahead = "🏎️ 💨 ×${count}"
-behind = "🐢 ×${count}"
-diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count}"
-untracked = "🛤️  ×${count}"
-stashed = "📦 "
-modified = "📝 ×${count}"
-staged = "🗃️  ×${count}"
-renamed = "📛 ×${count}"
-deleted = "🗑️  ×${count}"
-style = "bright-white"
-format = "$all_status$ahead_behind"
-# format = '([\[$all_status$ahead_behind\]]($style) )'
-# stashed = "[${count}*](green)"
-# modified = "[${count}+](yellow)"
-# deleted = "[${count}-](red)"
-# conflicted = "[${count}~](red)"
-# ahead = "⇡${count}"
-# behind = "⇣${count}"
-# untracked = "[${count}?](blue)"
-# staged = "[${count}+](green)"
+ conflicted = "⚔️ "
+ ahead = "🏎️ 💨 ×${count} "
+ behind = "🐢 ×${count} "
+ diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count} "
+ untracked = "🛤️  ×${count} "
+ stashed = "📦 "
+ modified = "📝 ×${count} "
+ staged = "🗃️  ×${count} "
+ renamed = "📛 ×${count} "
+ deleted = "🗑️  ×${count} "
+ style = "bright-white"
+#  format = "$all_status $ahead_behind"
+format = '([\[$all_status$ahead_behind\]]($style))'
+
+
+#format = '([\[$all_status$ahead_behind\]]($style) )'
+#stashed = "[${count}*](green)"
+#modified = "[${count}+](yellow)"
+#deleted = "[${count}-](red)"
+#conflicted = "[${count}~](red)"
+#ahead = "⇡${count}"
+#behind = "⇣${count}"
+#untracked = "[${count}?](blue)"
+#staged = "[${count}+](green)"
 
 [git_state]
 style = "bold red"
@@ -128,20 +178,11 @@ symbol = " "
 [julia]
 symbol = " "
 
-[haskell]
-symbol = "λ "
-
-[memory_usage]
-symbol = " "
-
-[nim]
-symbol = " "
 
 [nix_shell]
 symbol = " "
 
-[package]
-symbol = " "
+
 
 [perl]
 symbol = " "
@@ -152,7 +193,8 @@ symbol = " "
 [python]
 symbol = "🐍 "
 #pyenv_version_name = true
-format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
+# format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
+format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
 style = "bold yellow"
 pyenv_prefix = "venv "
 python_binary = ["./venv/bin/python", "python", "python3", "python2"]
@@ -164,6 +206,7 @@ symbol = " "
 
 [rust]
 symbol = " "
+format = '\[[$symbol($version)]($style)\]'
 
 [scala]
 symbol = " "
@@ -173,6 +216,94 @@ symbol = " "
 
 
 [nodejs]
-format = "via [ Node.js $version](bold green) "
+format = "via [  Node.js $version](bold green) "
 detect_files = ["package.json", ".node-version"]
 detect_folders = ["node_modules"]
+
+
+
+[buf]
+symbol = " "
+
+
+
+[fossil_branch]
+symbol = " "
+
+
+[guix_shell]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[haxe]
+symbol = " "
+
+
+[lua]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[meson]
+symbol = "󰔷 "
+
+[nim]
+symbol = "󰆥 "
+
+[os]
+format = '\[[$symbol]($style)\]'
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Windows = "󰍲 "
+
+[package]
+symbol = "󰏗 "
+
+[pijul_channel]
+symbol = " "
+
+
+[rlang]
+symbol = "󰟔 "
+
