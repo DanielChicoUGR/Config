@@ -1,0 +1,13 @@
+[Desktop Entry]
+
+Type=Application
+
+Exec=sh -c ‘sleep 10 && /home/daniel/.repos/configuraciones/glava/glava.sh’
+
+Hidden=false
+
+NoDisplay=false
+
+X-GNOME-Autostart-enabled=true
+
+Name=GLava
