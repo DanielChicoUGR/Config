@@ -2,12 +2,13 @@
 
 Type=Application
 
-Exec=sh -c ‘sleep 10 && /home/daniel/.repos/configuraciones/glava/glava.sh’
+Exec=/home/daniel/.repos/configuraciones/glava/glava_daemon.sh
 
 Hidden=false
 
 NoDisplay=false
 
 X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=10
 
 Name=GLava
