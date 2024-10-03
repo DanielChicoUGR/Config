@@ -73,15 +73,15 @@ alias .5='cd ../../../../..'
 
 # Alias LS
 
-alias ll='exa --icons -lh --group-directories-first'
-alias la='exa --icons -lgha --group-directories-first'
-alias l='exa --icons --group-directories-first'
-alias lla='exa --icons -lha --group-directories-first'
-alias ls='exa --icons --group-directories-first'
-alias lt='exa --icons --tree'
-alias lta='exa -lgha --icons --tree'
-alias lld='exa --icons -lh -s modified'
-alias llad='exa --icons -lha -s modified'
+alias ll='exa --icons --color=always -lh --group-directories-first'
+alias la='exa --icons --color=always -lgha --group-directories-first'
+alias l='exa --icons --color=always --group-directories-first'
+alias lla='exa --icons --color=always -lha --group-directories-first'
+alias ls='exa --icons --color=always --group-directories-first'
+alias lt='exa --icons --color=always --tree'
+alias lta='exa -lgha --icons --color=always --tree'
+alias lld='exa --icons --color=always -lh -s modified'
+alias llad='exa --icons --color=always -lha -s modified'
 
 
 alias cat='batcat'

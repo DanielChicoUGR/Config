@@ -1,10 +1,12 @@
 #!/bin/bash
 
 # Instala las últimas actualizaciones
+sudo apt install nala
+
 sudo nala upgrade --update
 
 # Instala los paquetes necesarios
-sudo nala install stacer kitty exa bat python3-pip python3-venv snapd build-essential fzf htop pandoc texlive-latex-recommended zeal libstdc++-12-dev libclang-14-dev clang-14 clang-tidy clang-format fish -y
+sudo nala install stacer kitty exa bat snapd build-essential fzf htop pandoc texlive-latex-recommended zeal libstdc++-12-dev libclang-14-dev clang-14 clang-tidy clang-format fish -y
 #sudo apt install software-properties-common apt-transport-https wget -y
 
 
@@ -88,8 +90,8 @@ cd $HOME
 
 #Descarga e instalación de opera
 curl https://download3.operacdn.com/pub/opera/desktop/101.0.4843.33/linux/opera-stable_101.0.4843.33_amd64.deb --output /tmp/opera.deb
-sudo apt install /tmp/opera.deb -y
-rm $HOME/Descargas/opera.deb
+sudo nala install /tmp/opera.deb -y
+# rm $HOME/Descargas/opera.deb
 
 
 # Configuracion fuente terminal
@@ -157,7 +159,8 @@ ln -s $HOME/.local/share/cmake-3.27.6-linux-x86_64/bin/ctest $HOME/.local/bin/ct
 
 # eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-brew install neovim starship
+# brew install neovim starship
+curl -sS https://starship.rs/install.sh | sh
 
 
 #git clone https://github.com/AstroNvim/AstroNvim $HOME/.config/nvim
@@ -199,12 +202,14 @@ ln -s /home/daniel/.repos/configuraciones/starship.toml /home/daniel/.config/sta
 cd $HOME
 
 
-#sudo nala install -y libgl1-mesa-dev libpulse0 libpulse-dev libxext6 libxext-dev libxrender-dev libxcomposite-dev liblua5.3-dev liblua5.3 lua-lgi lua-filesystem libobs0 libobs-dev meson build-essential gcc 
+sudo nala install -y libgl1-mesa-dev libpulse0 libpulse-dev libxext6 libxext-dev libxrender-dev libxcomposite-dev liblua5.3-dev liblua5.3-0 lua-lgi lua-filesystem libobs0 libobs-dev meson build-essential gcc 
 
-#git clone https://github.com/jarcode-foss/glava $HOME/.repos/glava
-#cd $HOME/.repos/glava
-#meson build --prefix /usr
-#ninja -C build
-#sudo ninja -C build install
+git clone https://github.com/jarcode-foss/glava $HOME/.repos/glava
+cd $HOME/.repos/glava
+git fetch origin refs/pull/185/head
+git checkout FETCH_HEAD
+meson build --prefix /usr
+ninja -C build
+sudo ninja -C build install
 
 cd $HOME

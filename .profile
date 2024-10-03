@@ -38,15 +38,11 @@ if [ -d "/home/daniel/.appimages" ] ; then
   PATH="/home/daniel/.appimages:$PATH"
 fi
 
-# Homebrew package manager
 
-if [ -d "/home/linuxbrew/.linuxbrew/bin" ] ; then
-     PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-fi
 
 
 # Added by Toolbox App
-export PATH="$PATH:/home/daniel/.local/share/JetBrains/Toolbox/scripts"
+# export PATH="$PATH:/home/daniel/.local/share/JetBrains/Toolbox/scripts"
 
 # Homebrew package manager
 
@@ -54,7 +50,3 @@ if [ -d "/home/linuxbrew/.linuxbrew/bin" ] ; then
      PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 fi
 
-# Mason installation
-if [ -d "/home/daniel/.local/share/nvim/mason/bin" ] ; then
-   PATH="/home/daniel/.local/share/nvim/mason/bin:$PATH"
-fi
