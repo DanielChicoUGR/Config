@@ -131,13 +131,13 @@ end
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-if test -f /home/daniel/anaconda3/bin/conda
-    eval /home/daniel/anaconda3/bin/conda "shell.fish" "hook" $argv | source
+if test -f /home/daniel/miniconda3/bin/conda
+    eval /home/daniel/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 else
-    if test -f "/home/daniel/anaconda3/etc/fish/conf.d/conda.fish"
-        . "/home/daniel/anaconda3/etc/fish/conf.d/conda.fish"
+    if test -f "/home/daniel/miniconda3/etc/fish/conf.d/conda.fish"
+        . "/home/daniel/miniconda3/etc/fish/conf.d/conda.fish"
     else
-        set -x PATH "/home/daniel/anaconda3/bin" $PATH
+        set -x PATH "/home/daniel/miniconda3/bin" $PATH
     end
 end
 # <<< conda initialize <<<

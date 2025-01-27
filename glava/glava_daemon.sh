@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Ruta a los scripts que se deben ejecutar
-SCRIPT_ONE_MONITOR="glava --desktop -e ./rc.glsl"
-SCRIPT_MULTIPLE_MONITORS="glava --desktop -e ./rc_2monitor.glsl"
+SCRIPT_ONE_MONITOR="glava --desktop -e rc_monit1.glsl"
+SCRIPT_MULTIPLE_MONITORS="glava --desktop -e rc_monit2.glsl"
 
 # Función para contar monitores conectados
 count_monitors() {

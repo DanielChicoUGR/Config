@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# echo "Running LaTeX container with user $(id -u):$(id -g)"
+
+# echo "Mounting current directory $(pwd) to /data"
+
+# -i --user="$(id -u):$(id -g)"
+
+podman run --rm -v $(pwd):/data mingc/latex pdflatex $@
