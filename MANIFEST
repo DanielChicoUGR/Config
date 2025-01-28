@@ -1,0 +1,7 @@
+hypr|symlink|.config
+rofi|symlink|.config
+waybar|symlink|.config
+#spotify/spotify|symlink|.local/bin/
+#spotify/spotify.desktop|symlink|.local/share/applications/
+# latex/latex|symlink|.local/bin/
+starship.toml|symlink|.config
