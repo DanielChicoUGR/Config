@@ -13,18 +13,19 @@
         "custom/rofi",
         "hyprland/workspaces",
         "hyprland/submap",
-        "temperature",
         //"idle_inhibitor",
-        // "mpd"
-        "custom/spotify"
+        "mpris",
+        "temperature"
     ],
     "modules-center": [
         //"hyprland/window"
+        // "custom/spotify",
         "clock#date",
         "custom/weather"
         //"custom/gammastep"
     ],
     "modules-right": [
+        "cava",
         "backlight",
         "custom/storage",
         "memory",
@@ -188,18 +189,7 @@
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous"
     },
-    "custom/media": {
-        "format": "{0} {1}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        //"exec": "~/.config/waybar/mediaplayer.py" // Script in resources folder
-        // "exec": "~/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    },
+
     "custom/power": {
         "format": " 󰐥 ",
         "tooltip": false,
@@ -245,6 +235,56 @@
         "format": "{max_frequency}GHz <span color=\"darkgray\">| {usage}%</span>",
         "max-length": 13,
         "min-length": 13
+    },
+    "cava": {
+        "framerate": 30,
+        "autosens": 1,
+        "mode": "resume",
+        "sensitivity": 100,
+        // "bars": 14,
+        // "lower_cutoff_freq": 50,
+        // "higher_cutoff_freq": 10000,
+        "method": "pipewire",
+        "source": "auto",
+        "stereo": true,
+        "reverse": false,
+        "bar_delimiter": 0,
+        "monstercat": false,
+        "waves": false,
+        "noise_reduction": 0.77,
+        "input_delay": 2,
+        "format-icons": [
+            "▁",
+            "▂",
+            "▃",
+            "▄",
+            "▅",
+            "▆",
+            "▇",
+            "█"
+        ],
+        "actions": {
+            "on-click-right": "mode"
+        }
+    },
+    "mpris": {
+        "format": "{player_icon} <i>{dynamic}</i>",
+        "format-paused": "{player_icon} {status_icon} <i>{dynamic}</i>",
+        "dynamic-len": 30,
+        "interval": 1,
+        "max-length": 30,
+        "player-icons": {
+            "default": "▶",
+            "mpv": "🎵",
+            "spotify": "",
+            // "spotify": "\udb81\udcc7  ",
+        },
+        "status-icons": {
+            "paused": "⏸",
+            "playing": "⏯️",
+            "stopped": "⏹"
+        },
+        // "ignored-players": ["firefox"]
     },
     "mpd": {
         "max-length": 25,

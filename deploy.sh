@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#  #!/bin/bash
+
+
 
 set -e
 
@@ -6,7 +9,8 @@ SCRIPT_DIR="$( cd "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
 
 symlinkFile() {
     filename="$SCRIPT_DIR/$1"
-    destination="$HOME/$2/$1"
+    # echo $(basename "$1")
+    destination="$HOME/$2/$(basename "$1")"
 
     mkdir -p $(dirname "$destination")
 

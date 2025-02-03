@@ -29,6 +29,7 @@ if test -d ~/.local/bin
     end
 end
 
+
 # Add depot_tools to PATH
 if test -d ~/Applications/depot_tools
     if not contains -- ~/Applications/depot_tools $PATH
@@ -90,11 +91,11 @@ end
 
 ## Useful aliases
 # Replace ls with eza
-alias ls='eza -alB --color=always --group-directories-first --icons' # preferred listing
-alias lla='eza -alB --color=always --group-directories-first --icons' # preferred listing
-alias la='eza -aB --color=always --group-directories-first --icons' # all files and dirs
-alias ll='eza -lB --color=always --group-directories-first --icons' # long formatb
-alias lt='eza -aTB --color=always --group-directories-first --icons' # tree listing
+alias ls='eza -alb --color=always --group-directories-first --icons' # preferred listing
+alias lla='eza -alb --color=always --group-directories-first --icons' # preferred listing
+alias la='eza -ab --color=always --group-directories-first --icons' # all files and dirs
+alias ll='eza -lb --color=always --group-directories-first --icons' # long formatb
+alias lt='eza -aTb --color=always --group-directories-first --icons' # tree listing
 alias l.="eza -a | grep -e '^\.'" # show only dotfiles
 
 # Common use

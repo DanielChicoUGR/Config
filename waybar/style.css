@@ -1,7 +1,7 @@
-
 * {
     font-family: "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 14px;  /* Slightly smaller font size */
+    font-size: 14px;
+    /* Slightly smaller font size */
     font-weight: 900;
     margin: 0;
     padding: 0;
@@ -28,17 +28,20 @@
 }
 
 window#waybar.hidden {
-  opacity: 0.2;
+    opacity: 0.2;
 }
 
 #workspaces button {
-    padding: 3px 5px;  /* Adjusted padding to reduce height */
-    margin: 3px 5px;    /* Reduced margin slightly */
+    padding: 3px 5px;
+    /* Adjusted padding to reduce height */
+    margin: 3px 5px;
+    /* Reduced margin slightly */
     border-radius: 6px;
     color: @foreground;
     background-color: #111827;
     transition: all 0.3s ease-in-out;
-    font-size: 13px;  /* Slightly smaller font size */
+    font-size: 13px;
+    /* Slightly smaller font size */
 }
 
 #workspaces button.active {
@@ -57,20 +60,31 @@ window#waybar.hidden {
 #workspaces {
     background-color: #111827;
     border-radius: 14px;
-    padding: 3px 6px;  /* Adjusted padding to reduce height */
+    padding: 3px 6px;
+    /* Adjusted padding to reduce height */
 }
 
 #window {
     background-color: #111827;
-    font-size: 15px;   /* Slightly smaller font size */
+    font-size: 15px;
+    /* Slightly smaller font size */
     font-weight: 800;
     color: @foreground;
     border-radius: 14px;
-    padding: 3px 6px;  /* Reduced padding */
+    padding: 3px 6px;
+    /* Reduced padding */
     margin: 2px;
     opacity: 1;
 }
 
+
+/* #mpris.${status}{}
+#mpris.${player}{
+    
+} */
+
+
+#mpris,
 #clock,
 #battery,
 #cpu,
@@ -102,8 +116,21 @@ window#waybar.hidden {
 #custom-weather.default {
     background-color: #111827;
     border-radius: 14px;
-    padding: 6px;  /* Adjusted padding */
+    padding: 6px;
 }
+
+#mpris.spotify {
+    background-color: #187023;
+}
+
+#mpris.firefox {
+    background-color: #ff7139;
+}
+
+#mpris.vlc {
+    background-color: #ffcc00;
+}
+
 
 #custom-screenshot_t {
     background-color: #111827;
@@ -111,16 +138,13 @@ window#waybar.hidden {
     padding: 6px;
 }
 
-#custom-spotify {
-    background-color: #111827;
-    border-radius: 14px;
-    padding: 3px 12px;
-}
+
 
 #tray {
     background-color: #111827;
     border-radius: 14px;
-    padding: 6px;  /* Adjusted padding */
+    padding: 6px;
+    /* Adjusted padding */
 }
 
 #cpu {
@@ -151,7 +175,8 @@ window#waybar.hidden {
     background-color: #1b242b;
     color: #6a92d7;
     border-radius: 7.5px;
-    padding: 3px 6px;  /* Adjusted padding */
+    padding: 3px 6px;
+    /* Adjusted padding */
 }
 
 #custom-weather.severe {
@@ -186,12 +211,12 @@ window#waybar.hidden {
 }
 
 /* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
+.modules-left>widget:first-child>#workspaces {
     margin-left: 0;
 }
 
 /* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
+.modules-right>widget:last-child>#workspaces {
     margin-right: 0;
 }
 
@@ -279,11 +304,11 @@ label:focus {
     background-color: #eb4d4b;
 }
 
-#tray > .passive {
+#tray>.passive {
     -gtk-icon-effect: dim;
 }
 
-#tray > .needs-attention {
+#tray>.needs-attention {
     -gtk-icon-effect: highlight;
     background-color: #eb4d4b;
 }
@@ -313,10 +338,10 @@ label:focus {
     min-width: 16px;
 }
 
-#keyboard-state > label {
+#keyboard-state>label {
     padding: 0 0px;
 }
 
-#keyboard-state > label.locked {
+#keyboard-state>label.locked {
     background: rgba(0, 0, 0, 0.2);
 }

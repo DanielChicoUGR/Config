@@ -1,24 +1,16 @@
-#format = """
-#[╭─user───❯](bold blue) $username
-#[┣─system─❯](bold yellow) $hostname
-#[┣─project❯](bold red) $directory$rust$git_branch$git_state$git_status$package$golang$terraform$docker_context$python$docker_context$nodejs
-#[╰─cmd────❯](bold green)
-#"""
+# format = """
+# [╭─user───❯](bold blue) $username
+# [┣─system─❯](bold yellow) $hostname
+# [┣─project❯](bold red) $directory$git_branch$git_state$git_status$package$golang$terraform$docker_context$python$docker_context$nodejs$conda$dart$elixir$elm$erlang$java$julia$kotlin$nim$ocaml$perl$php$ruby$scala$swift$zig$rust
+# [╰─cmd────❯](bold green)
+# """
 
-format = '$username$hostname$directory$all'
+format = """$os$username$hostname$battery$directory
+$character"""
 right_format = """$git_branch\
 $git_state\
-$git_status\
-$rust\
-$cmake\
-$c\
-$package\
-$golang\
-$terraform\
-$docker_context\
-$python$\
-docker_context\
-$nodejs\
+$git_status
+$all
 $time
 """
 
@@ -55,6 +47,8 @@ full_symbol = "🔋"
 charging_symbol = "🔌"
 discharging_symbol = "⚡"
 
+[[battery.display]]
+threshold = 60
 
 
 #  
@@ -88,8 +82,11 @@ symbol = "  "
 format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
 
 [conda]
-symbol = " "
+# symbol = " "
+symbol = '🅒 '
 format = '\[[$symbol$environment]($style)\]'
+ignore_base = false
+style = "red italic"
 
 [dart]
 symbol = " "
@@ -97,6 +94,11 @@ format = '\[[$symbol($version)]($style)\]'
 
 [c]
 symbol = " "
+commands = [ [ "cc", "--version" ], [ "gcc", "--version" ], [ "clang", "--version" ] ]
+detect_extensions = [ "**/src/**.c", "**/include/**.h" ]
+detect_files = [ "Makefile" ]
+style = "bold blue"
+
 
 
 
@@ -120,6 +122,7 @@ disabled = false
 # format = "via [$symbol $version]($style) "
 format = '\[[$symbol ($version)]($style)\]'
 symbol = "CMAKE"
+# symbol = " "
 style = "bold green"
 
 [elm]
@@ -130,30 +133,30 @@ symbol = " "
 format = '\[[$symbol$branch]($style)\]'
 
 [git_status]
-#  conflicted = "⚔️ "
-#  ahead = "🏎️ 💨 ×${count} "
-#  behind = "🐢 ×${count} "
-#  diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count} "
-#  untracked = "🛤️  ×${count} "
-#  stashed = "📦 "
-#  modified = "📝 ×${count} "
-#  staged = "🗃️  ×${count} "
-#  renamed = "📛 ×${count} "
-#  deleted = "🗑️  ×${count} "
-#  style = "bright-white"
-# #  format = "$all_status $ahead_behind"
-# format = '([\[$all_status$ahead_behind\]]($style))'
+ conflicted = "⚔️ "
+ ahead = "🏎️ 💨 ×${count} "
+ behind = "🐢 ×${count} "
+ diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count} "
+ untracked = "🛤️  ×${count} "
+ stashed = "📦 "
+ modified = "📝 ×${count} "
+ staged = "🗃️  ×${count} "
+ renamed = "📛 ×${count} "
+ deleted = "🗑️  ×${count} "
+ style = "bright-white"
+#  format = "$all_status $ahead_behind"
+format = '([\[$all_status$ahead_behind\]]($style))'
 
 
-format = '([\[$all_status$ahead_behind\]]($style) )'
-stashed = "[${count}*](green)"
-modified = "[${count}+](yellow)"
-deleted = "[${count}-](red)"
-conflicted = "[${count}~](red)"
-ahead = "⇡${count}"
-behind = "⇣${count}"
-untracked = "[${count}?](blue)"
-staged = "[${count}+](green)"
+# format = '([\[$all_status$ahead_behind\]]($style) )'
+# stashed = "[${count}*](green)"
+# modified = "[${count}+](yellow)"
+# deleted = "[${count}-](red)"
+# conflicted = "[${count}~](red)"
+# ahead = "⇡${count}"
+# behind = "⇣${count}"
+# untracked = "[${count}?](blue)"
+# staged = "[${count}+](green)"
 
 [git_state]
 style = "bold red"
@@ -193,16 +196,24 @@ symbol = " "
 [python]
 symbol = "🐍 "
 #pyenv_version_name = true
-# format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
-format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
+format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
+# format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
 style = "bold yellow"
 pyenv_prefix = "venv "
 python_binary = ["./venv/bin/python", "python", "python3", "python2"]
 detect_extensions = ["py"]
 version_format = "v${raw}"
+disabled = true
 
 [ruby]
 symbol = " "
+
+[kotlin]
+symbol = " "
+
+[gradle]
+# symbol = "\ue7f2"
+symbol = " "
 
 [rust]
 symbol = " "
@@ -254,48 +265,103 @@ symbol = "󰔷 "
 symbol = "󰆥 "
 
 [os]
-format = '\[[$symbol]($style)\]'
+format = '[$symbol]($style)'
+disabled = false
 
+
+# This is the default symbols table.
 [os.symbols]
-Alpaquita = " "
-Alpine = " "
-Amazon = " "
-Android = " "
-Arch = " "
-Artix = " "
-CentOS = " "
-Debian = " "
-DragonFly = " "
-Emscripten = " "
-EndeavourOS = " "
-Fedora = " "
-FreeBSD = " "
-Garuda = "󰛓 "
-Gentoo = " "
-HardenedBSD = "󰞌 "
-Illumos = "󰈸 "
-Linux = " "
-Mabox = " "
-Macos = " "
-Manjaro = " "
-Mariner = " "
-MidnightBSD = " "
-Mint = " "
-NetBSD = " "
-NixOS = " "
-OpenBSD = "󰈺 "
-openSUSE = " "
-OracleLinux = "󰌷 "
-Pop = " "
-Raspbian = " "
-Redhat = " "
-RedHatEnterprise = " "
-Redox = "󰀘 "
-Solus = "󰠳 "
-SUSE = " "
-Ubuntu = " "
-Unknown = " "
-Windows = "󰍲 "
+AIX = "➿ "
+Alpaquita = "🔔 "
+AlmaLinux = "💠 "
+Alpine = "🏔️ "
+Amazon = "🙂 "
+Android = "🤖 "
+Arch = "󰣇 "
+Artix = "󰣇 "
+CachyOS = "󰣇 "
+CentOS = "💠 "
+Debian = "🌀 "
+DragonFly = "🐉 "
+Emscripten = "🔗 "
+EndeavourOS = "🚀 "
+Fedora = "🎩 "
+FreeBSD = "😈 "
+Garuda = "🦅 "
+Gentoo = "🗜️ "
+HardenedBSD = "🛡️ "
+Illumos = "🐦 "
+Kali = "🐉 "
+Linux = "🐧 "
+Mabox = "📦 "
+Macos = "🍎 "
+Manjaro = "🥭 "
+Mariner = "🌊 "
+MidnightBSD = "🌘 "
+Mint = "🌿 "
+NetBSD = "🚩 "
+NixOS = "❄️ "
+Nobara = "🎩 "
+OpenBSD = "🐡 "
+OpenCloudOS = "☁️ "
+openEuler = "🦉 "
+openSUSE = "🦎 "
+OracleLinux = "🦴 "
+Pop = "🍭 "
+Raspbian = "🍓 "
+Redhat = "🎩 "
+RedHatEnterprise = "🎩 "
+RockyLinux = "💠 "
+Redox = "🧪 "
+Solus = "⛵ "
+SUSE = "🦎 "
+Ubuntu = "🎯 "
+Ultramarine = "🔷 "
+Unknown = "❓ "
+Uos = "🐲 "
+Void = "  "
+Windows = "🪟 "
+
+# [os.symbols]
+# Alpaquita = " "
+# Alpine = " "
+# Amazon = " "
+# Android = " "
+# Arch = " "
+# Artix = " "
+# CentOS = " "
+# Debian = " "
+# DragonFly = " "
+# Emscripten = " "
+# EndeavourOS = " "
+# Fedora = " "
+# FreeBSD = " "
+# Garuda = "󰛓 "
+# Gentoo = " "
+# HardenedBSD = "󰞌 "
+# Illumos = "󰈸 "
+# Linux = " "
+# Mabox = " "
+# Macos = " "
+# Manjaro = " "
+# Mariner = " "
+# MidnightBSD = " "
+# Mint = " "
+# NetBSD = " "
+# NixOS = " "
+# OpenBSD = "󰈺 "
+# openSUSE = " "
+# OracleLinux = "󰌷 "
+# Pop = " "
+# Raspbian = " "
+# Redhat = " "
+# RedHatEnterprise = " "
+# Redox = "󰀘 "
+# Solus = "󰠳 "
+# SUSE = " "
+# Ubuntu = " "
+# Unknown = " "
+# Windows = "󰍲 "
 
 [package]
 symbol = "󰏗 "
