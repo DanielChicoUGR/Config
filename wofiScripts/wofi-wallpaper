@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+# Configuration
+WALLPAPER_DIR="$HOME/.config/wallpapers"
+CACHE_DIR="$HOME/.cache/wallpaper-selector"
+THUMBNAIL_WIDTH="1920"
+THUMBNAIL_HEIGHT="1080"
+DEFAULT_WALLPAPER="$WALLPAPER_DIR/default.jpg"
+DEPENDENCIES=(magick wofi swww notify-send)
+
+# Check for dependencies
+for cmd in "${DEPENDENCIES[@]}"; do
+    if ! command -v "$cmd" &>/dev/null; then
+        notify-send "Dependency Error" "$cmd is required but not installed." -u critical
+        exit 1
+    fi
+done
+
+# Ensure directories exist
+mkdir -p "$WALLPAPER_DIR" "$CACHE_DIR"
+
+# Function to generate thumbnail with optimized settings
+generate_thumbnail() {
+    local input="$1"
+    local output="$2"
+    magick "$input" -strip -quality 90 -resize "${THUMBNAIL_WIDTH}x${THUMBNAIL_HEIGHT}^" \
+           -gravity center -extent "${THUMBNAIL_WIDTH}x${THUMBNAIL_HEIGHT}" "$output"
+}
+
+generate_menu() {
+    local found=0
+    local -a thumbnail_jobs=()
+
+    shopt -s nullglob
+    for img in "$WALLPAPER_DIR"/*.{jpg,jpeg,png,webp}; do
+        [[ -f "$img" ]] || continue
+        found=1
+
+        thumbnail="$CACHE_DIR/$(basename "${img%.*}").png"
+        if [[ ! -f "$thumbnail" ]] || [[ "$img" -nt "$thumbnail" ]]; then
+            generate_thumbnail "$img" "$thumbnail" &
+            thumbnail_jobs+=($!)
+        fi
+        echo -en "img:$thumbnail\x00info:$(basename "$img")\x1f$img\n"
+    done
+    shopt -u nullglob
+
+    # Wait for all thumbnail generation to complete
+    for job in "${thumbnail_jobs[@]}"; do
+        wait "$job"
+    done
+
+    [[ $found -eq 0 ]] && {
+        notify-send "Wallpaper Selector" "No wallpapers found in $WALLPAPER_DIR" -u critical
+        exit 1
+    }
+}
+
+# Display wallpaper selection menu
+selected=$(generate_menu | wofi --show dmenu \
+    --define "image-size=$THUMBNAIL_WIDTH,$THUMBNAIL_HEIGHT" \
+    --conf $HOME/.config/wofi/wallpaper.conf )
+
+# Handle wallpaper selection and application
+if [[ -n "$selected" ]]; then
+    original_filename=$(basename "${selected#img:}")
+    original_filename="${original_filename%.*}"
+    original_path=$(find "$WALLPAPER_DIR" -type f -iname "$original_filename.*" -print -quit)
+
+    [[ -z "$original_path" ]] && {
+        notify-send "Wallpaper Error" "Original wallpaper file not found."
+        exit 1
+    }
+else
+    notify-send "Wallpaper Selector" "Using default wallpaper." -i "$DEFAULT_WALLPAPER"
+    original_path="$DEFAULT_WALLPAPER"
+fi
+
+# Set wallpaper with smooth transition
+swww img "$original_path" \
+    --transition-type fade\
+    --transition-fps 160 \
+    --transition-duration 1 \
+    --transition-bezier 0.65,0,0.35,1 \
+    --transition-step 1 || {
+    notify-send "Wallpaper Error" "Failed to set wallpaper."
+    exit 1
+}
+
+# Save current wallpaper selection
+echo "$original_path" > "$HOME/.cache/current_wallpaper"
+
+notify-send "Wallpaper Updated" "Successfully set: $(basename "$original_path")" -i "$original_path"

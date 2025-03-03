@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Obsidian
+Exec=bash -c "OBSIDIAN_USE_WAYLAND=1 /home/daniel/.appimage/obsidian.AppImage -enable-features=UseOzonePlatform -ozone-platform=wayland"
+Terminal=false
+Type=Application
+Icon=./icons/obsidian.png
+StartupWMClass=obsidian
+X-AppImage-Version=0.8.15
+Comment=Obsidian
+Categories=Office;
+MimeType=text/html;x-scheme-handler/obsidian;

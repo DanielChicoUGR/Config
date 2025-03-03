@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+## Wofi Powermenu for Hyprland
+
+# Configurable Variables
+use_icons=true  # Set to false to disable icons
+
+# Wofi configuration files
+CONFIG="${WOFI_CONFIG:-$HOME/.config/wofi/config}"
+STYLE="${WOFI_STYLE:-$HOME/.config/wofi/style.css}"
+
+# Wofi commands
+wofi_command="wofi --show dmenu --conf ${CONFIG} --style ${STYLE} --width=600 --height=255"
+wofi_confirm="wofi --show dmenu --conf ${CONFIG} --style ${STYLE} --width=600 --height=131"
+
+# Get system uptime
+uptime=$(uptime -p | cut -d' ' -f2-)
+
+# Menu options with or without icons
+if $use_icons; then
+    shutdown="   Shutdown"
+    reboot="   Reboot"
+    lock="   Lock"
+    suspend="   Sleep"
+    logout="   Logout"
+else
+    shutdown="Shutdown"
+    reboot="Reboot"
+    lock="Lock"
+    suspend="Sleep"
+    logout="Logout"
+fi
+
+# Confirmation prompt
+confirm_action() {
+    response=$(echo -e "No\nYes" | $wofi_confirm --prompt "Are you sure?")
+    [[ "$response" == "Yes" ]]
+}
+
+# Open Wofi menu
+open_menu() {
+    options="$lock\n$sleep\n$logout\n$reboot\n$shutdown"
+    chosen=$(echo -e "$options" | timeout 10s $wofi_command --prompt "UP - $uptime")
+
+    [[ -z "$chosen" ]] && exit 0  # Exit if no selection is made
+
+    case $chosen in
+        "$shutdown")
+            if confirm_action; then
+                notify-send "System is shutting down..."
+                sleep 2
+                systemctl poweroff
+            fi
+            ;;
+        "$reboot")
+            if confirm_action; then
+                notify-send "Rebooting system..."
+                sleep 2
+                systemctl reboot
+            fi
+            ;;
+        "$lock")
+            command -v hyprlock &>/dev/null && hyprlock
+            ;;
+        "$sleep")
+            battery_path="/sys/class/power_supply/BAT0/capacity"
+            battery_level=$(cat "$battery_path" 2>/dev/null || echo 100)
+            if [[ "$battery_level" -ge 5 ]]; then
+                command -v mpc &>/dev/null && mpc -q pause
+                command -v pulsemixer &>/dev/null && pulsemixer --mute
+                notify-send "System suspending..."
+                sleep 2
+                systemctl suspend
+            else
+                notify-send "Battery too low to suspend!" "Charge your device first."
+            fi
+            ;;
+        "$logout")
+            if confirm_action; then
+                notify-send "Logging out..."
+                sleep 2
+                command -v hyprctl &>/dev/null && hyprctl dispatch exit 0
+            fi
+            ;;
+    esac
+}
+
+# Prevent multiple instances
+if pgrep -fx "wofi --show dmenu" > /dev/null; then
+    pkill -f "wofi --show dmenu"
+else
+    open_menu
+fi

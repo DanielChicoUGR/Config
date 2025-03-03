@@ -18,22 +18,19 @@
         "temperature"
     ],
     "modules-center": [
-        //"hyprland/window"
-        // "custom/spotify",
         "clock#date",
         "custom/weather"
-        //"custom/gammastep"
     ],
     "modules-right": [
         "cava",
-        "backlight",
+        // "backlight",
         "custom/storage",
         "memory",
         "network",
         // "cpu",
         "battery",
-        "pulseaudio",
-        // "wireplumber",
+        // "pulseaudio",
+        "wireplumber",
         "custom/screenshot_t",
         // "tray",
         "custom/power"
@@ -96,7 +93,7 @@
     "memory": {
         "interval": 30,
         "format": "  {used:0.2f} / {total:0.0f} GB",
-        "on-click": "alacritty -e btop"
+        "on-click": "kitty -e btop"
     },
     "battery": {
         "interval": 2,
@@ -129,7 +126,7 @@
         "tooltip-format": " {bandwidthUpBits}  {bandwidthDownBits}\n{ifname}\n{ipaddr}/{cidr}\n",
         "tooltip-format-wifi": " {essid} {frequency}MHz\nStrength: {signaldBm}dBm ({signalStrength}%)\nIP: {ipaddr}/{cidr}\n {bandwidthUpBits}  {bandwidthDownBits}",
         "interval": 10,
-        "on-click": "$HOME/.config/rofi/applets/bin/wifi.sh"
+        "on-click": "wofi-wifi-menu"
     },
     "custom/storage": {
         "format": " {}",
@@ -189,7 +186,6 @@
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous"
     },
-
     "custom/power": {
         "format": " 󰐥 ",
         "tooltip": false,
@@ -237,14 +233,14 @@
         "min-length": 13
     },
     "cava": {
+        //        "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
         "framerate": 30,
         "autosens": 1,
-        "mode": "resume",
         "sensitivity": 100,
-        // "bars": 14,
-        // "lower_cutoff_freq": 50,
-        // "higher_cutoff_freq": 10000,
-        "method": "pipewire",
+        "bars": 14,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "method": "pulse",
         "source": "auto",
         "stereo": true,
         "reverse": false,
@@ -370,18 +366,18 @@
         "on-click-right": "amixer sset Master toggle"
     },
     "wireplumber": {
-        // "on-click": "pavucontrol",
-        "on-click": "$HOME/.config/rofi/applets/bin/volume.sh",
+        "on-click": "pavucontrol",
+        // "on-click": "$HOME/.config/rofi/applets/bin/volume.sh",
         "on-click-right": "amixer sset Master toggle 1>/dev/null",
-        //on-click: "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        //on-scroll-down: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04+";
-        //on-scroll-up: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04-";
+        // on-click: "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        // "on-scroll-down": "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04+",
+        // "on-scroll-up": "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04-",
         "format": "<span foreground='#fab387'>{icon}</span>  {volume}%",
         "format-muted": " ",
         "format-source": "",
         "format-source-muted": "",
-        //"format-muted": "<span foreground='#fab387'> </span>",
-        //"format-icons": [ "<span foreground='#fab387'></span>" ]
+        // "format-muted": "<span foreground='#fab387'> </span>",
+        // "format-icons": [ "<span foreground='#fab387'></span>" ]
         "format-icons": {
             "headphone": " ",
             "hands-free": " ",

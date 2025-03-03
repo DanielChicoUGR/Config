@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+use_icons=true # Set to false to disable icons
+# Files for wofi config and styling
+CONFIG="$HOME/.config/wofi/config"
+STYLE="$HOME/.config/wofi/style.css"
+
+wofi_command="wofi --show dmenu
+    --conf ${CONFIG} --style ${STYLE} \
+    --width=300 --height=255 \
+    --halign=center \
+    --content_halign=center \
+    --valign=center"
+
+# Entries
+if $use_icons; then
+    powermenu="   Powermenu"
+    wifi="    Wi-Fi"
+    bluetooth="   Bluetooth"
+    wallpaper="󰸉   Wallpaper"
+    web_launcher="󰜏  Web Launcher"
+else
+    powermenu=" Powermenu"
+    wifi="Wi-Fi"
+    bluetooth=" Bluetooth"
+    wallpaper="Wallpaper"
+    web_launcher="Web Launcher"
+fi
+
+open_menu (){
+    options="$powermenu\n$wifi\n$bluetooth\n$wallpaper\n$web_launcher"
+
+    chosen="$(echo -e "$options" | $wofi_command --prompt "Choose a Menu to Open ")"
+    case $chosen in
+        $powermenu)
+            if [[ "$?" == 0 ]]; then
+                notify-send "Opening Powermenu "
+                $HOME/.config/wofi/wofi-power-menu
+            else
+                exit
+            fi
+            ;;
+        $wifi)
+            if [[ "$?" == 0 ]]; then
+                notify-send "Opening Wi-Fi menu"
+                $HOME/.config/wofi/wofi-wifi-menu
+            else
+                exit
+            fi
+            ;;
+        $bluetooth)
+            if [[ "$?" == 0 ]]; then
+                notify-send "Opening Blueman-Manager"
+                blueman-manager
+            else
+                exit
+            fi
+            ;;
+        $wallpaper)
+            if [[ "$?" == 0 ]]; then
+                notify-send "Opening Wallpaper menu"
+                $HOME/.config/wofi/wofi-wallpaper-variety
+            else
+                exit
+            fi
+            ;;
+        $browse)
+            if [[ "$?" == 0 ]]; then
+                notify-send "Opening Web Launcher"
+                $HOME/.config/wofi/wofi-web-launcher
+            else
+                exit
+            fi
+            ;;
+    esac
+}
+
+if [[ ! `pidof wofi` ]]; then
+    open_menu
+else
+    pkill wofi
+fi

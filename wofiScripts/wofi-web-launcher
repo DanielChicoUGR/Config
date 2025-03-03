@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Creates a web history file for storing search History
+HISTORY_FILE="$HOME/.wofi_web_history"
+
+# Load history for autocomplete
+history=$(cat "$HISTORY_FILE" 2>/dev/null)
+
+query=$( (echo "$history"; echo "Clear History") | wofi --dmenu --prompt "Enter URL or Search" --width 600)
+
+# Handle user input
+if [[ -n "$query" ]]; then
+    if [[ "$query" == "Clear History" ]]; then
+        > "$HISTORY_FILE"
+        notify-send "Wofi Web Launcher" "History Cleared!"
+        exit
+    fi
+
+    # Save new query to history (avoid duplicates & blank lines)
+    grep -Fxq "$query" "$HISTORY_FILE" || [[ -n "$query" ]] && echo "$query" >> "$HISTORY_FILE"
+
+    # Sort & deduplicate history
+    sort -u -o "$HISTORY_FILE" "$HISTORY_FILE"
+
+    # Open input based on type
+    if [[ "$query" =~ ^(https?://|www\.) ]]; then
+        notify-send "Wofi Web Launcher" "Opening: $query"
+        xdg-open "$query"
+    elif [[ "$query" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+        notify-send "Wofi Web Launcher" "Opening: https://$query"
+        xdg-open "https://$query"
+    else
+        # Uses Duck Duck go as default search engine
+        notify-send "Wofi Web Launcher" "Searching DuckDuckGo: $query"
+        xdg-open "https://duckduckgo.com/?q=$(echo "$query" | sed 's/ /+/g')"
+    fi
+fi

@@ -89,6 +89,28 @@ function copy
     end
 end
 
+function connect_wifi
+    set argc (count $argv | tr -d \n)
+    
+    if test (count $argv) -ne 2 and test (count $argv) -ne 1
+        echo "Uso: connect_wifi <SSID> <PASSWORD>"
+        echo "O"
+        echo "Uso: connect_wifi <SSID>"
+        return 1
+    end
+    if test "$argc" = 2
+        set ssid $argv[1]
+        set password $argv[2]
+        nmcli dev wifi connect "$ssid" password "$password"
+    else
+        set ssid $argv[1]
+        nmcli dev wifi connect "$ssid" --ask
+    end
+    return $status
+end
+
+set -g HeadSetMAC F8:5C:7D:5D:12:3F
+
 ## Useful aliases
 # Replace ls with eza
 alias ls='eza -alb --color=always --group-directories-first --icons' # preferred listing

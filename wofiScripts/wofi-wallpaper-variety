@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# Configuration
+DEPENDENCIES=(wofi variety notify-send)
+
+# Check for dependencies
+for cmd in "${DEPENDENCIES[@]}"; do
+    if ! command -v "$cmd" &>/dev/null; then
+        notify-send "Dependency Error" "$cmd is required but not installed." -u critical
+        exit 1
+    fi
+done
+
+# Function to generate menu from variety's current wallpapers
+generate_menu() {
+    local found=0
+    local wallpapers=($(variety --get))
+
+    for img in "${wallpapers[@]}"; do
+        [[ -f "$img" ]] || continue
+        found=1
+        echo -en "img:$img\x00info:$(basename "$img")\x1f$img\n"
+    done
+
+    [[ $found -eq 0 ]] && {
+        notify-send "Wallpaper Selector" "No wallpapers found in variety's current list" -u critical
+        exit 1
+    }
+}
+
+# Display options menu
+selected=$(echo -e "Next Wallpaper\nSave as Favorite\nOpen Variety Settings\n$(generate_menu)" | wofi --show dmenu \
+    --define "image-size=1920,1080" \
+    --conf $HOME/.config/wofi/wallpaper.conf )
+
+# Handle selection
+case "$selected" in
+    "Next Wallpaper")
+        variety --next || {
+            notify-send "Wallpaper Error" "Failed to set next wallpaper."
+            exit 1
+        }
+        notify-send "Wallpaper Updated" "Next wallpaper set."
+        ;;
+    "Save as Favorite")
+        current_wallpaper=$(variety --get | head -n 1)
+        variety --favorite "$current_wallpaper" || {
+            notify-send "Wallpaper Error" "Failed to save wallpaper as favorite."
+            exit 1
+        }
+        notify-send "Wallpaper Updated" "Wallpaper saved as favorite."
+        ;;
+    "Open Variety Settings")
+        variety --preferences || {
+            notify-send "Wallpaper Error" "Failed to open Variety settings."
+            exit 1
+        }
+        ;;
+    *)
+        if [[ -n "$selected" ]]; then
+            original_path="${selected#img:}"
+            variety --set "$original_path" || {
+                notify-send "Wallpaper Error" "Failed to set wallpaper."
+                exit 1
+            }
+            notify-send "Wallpaper Updated" "Successfully set: $(basename "$original_path")" -i "$original_path"
+        else
+            notify-send "Wallpaper Selector" "No wallpaper selected."
+            exit 1
+        fi
+        ;;
+esac

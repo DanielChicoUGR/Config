@@ -1,11 +1,23 @@
 hypr|symlink|.config
-rofi|symlink|.config
+#rofi|symlink|.config
 waybar|symlink|.config
+wofi|symlink|.config
 swaylock|symlink|.config
 swappy|symlink|.config
 mako|symlink|.config
 micro|symlink|.config
 spotify/spotify|symlink|.local/bin/
-spotify/spotify.desktop|symlink|.local/share/applications/
+spotify/spotify.desktop|symlink|.local/share/applications
+obsidianDesktop/obsidian.desktop|symlink|.local/share/applications
+obsidianDesktop/obsidian.png|symlink|.local/share/applications/icons
 latex/latex|symlink|.local/bin/
 starship.toml|symlink|.config
+code-flags.conf|symlink|.config
+electron-flags.conf|symlink|.config
+spotify-launcher.conf|symlink|.config
+
+wofiScripts/wofi-mainmenu|symlink|.local/bin
+# wofiScripts/wofi-wallpaper|symlink|.local/bin/
+wofiScripts/wofi-wallpaper-variety|symlink|.local/bin
+wofiScripts/wofi-wifi-menu|symlink|.local/bin
+wofiScripts/wofi-power-menu|symlink|.local/bin
