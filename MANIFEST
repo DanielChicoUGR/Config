@@ -17,7 +17,9 @@ electron-flags.conf|symlink|.config
 spotify-launcher.conf|symlink|.config
 
 wofiScripts/wofi-mainmenu|symlink|.local/bin
+wofiScripts/wofi-power-menu|symlink|.local/bin
 # wofiScripts/wofi-wallpaper|symlink|.local/bin/
 wofiScripts/wofi-wallpaper-variety|symlink|.local/bin
+wofiScripts/wofi-web-launcher|symlink|.local/bin
 wofiScripts/wofi-wifi-menu|symlink|.local/bin
-wofiScripts/wofi-power-menu|symlink|.local/bin
+wofiScripts/show_keybinds|symlink|.local/bin

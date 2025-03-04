@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Obtener los keybinds usando hyprctl
+keybinds=$(hyprctl binds)
+
+# Formatear los keybinds para wofi
+menu_items=$(echo "$keybinds" | awk -F', ' '{print $2 " - " $3}')
+
+# Mostrar el menú de wofi
+echo "$menu_items" | wofi --dmenu --prompt "Hyprland Keybinds"
