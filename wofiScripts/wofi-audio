@@ -1,0 +1,368 @@
+#!/usr/bin/env bash
+
+# Configuration
+DEPENDENCIES=(wofi wpctl notify-send sed awk xrandr v4l2-ctl)
+
+# Check for dependencies
+for cmd in "${DEPENDENCIES[@]}"; do
+    if ! command -v "$cmd" &>/dev/null; then
+        notify-send "Dependency Error" "$cmd is required but not installed." -u critical
+        exit 1
+    fi
+done
+
+emoji=1
+
+# tr_* variables for translation or customization
+tr_main_menu_prompt='Dispositivos:'
+tr_select_type_prompt='Tipo de dispositivo:'
+tr_notice_changed_summary='Dispositivo Cambiado'
+tr_notice_changed_body='Default %s set to: %s'
+tr_notice_app_moved_body='App %s moved to %s'
+tr_notice_error_summary='Error de Dispositivo'
+tr_notice_error_body='Failed to set default %s.'
+tr_no_devices_found='No se encontraron dispositivos %s.'
+tr_inputs_category='Entradas de Audio:'
+tr_outputs_category='Salidas de Audio:'
+tr_video_inputs_category='Entradas de Video:'
+tr_video_outputs_category='Salidas de Video:'
+tr_apps_category='Apps:'
+tr_select_target_prompt='Seleccionar destino para:'
+tr_no_apps_found='No se encontraron aplicaciones activas'
+tr_video_select='Seleccionar dispositivo de video'
+tr_pavucontrol='Mixer de Audio (pavucontrol)'
+
+# Icon variables
+icon_output="${icon_output:-$([ -z "$emoji" ] && echo 󰕾 || echo 🔊)}"
+icon_input="${icon_input:-$([ -z "$emoji" ] && echo 󰍬 || echo 🎙️)}"
+icon_close="${icon_close:-$([ -z "$emoji" ] && echo  || echo ❌)}"
+icon_check="${icon_check:-$([ -z "$emoji" ] && echo  || echo ✅)}"
+icon_device="${icon_device:-$([ -z "$emoji" ] && echo 󰋋 || echo 🎧)}"
+icon_app="${icon_app:-$([ -z "$emoji" ] && echo 󰏘 || echo 📱)}"
+icon_on="${icon_on:-$([ -z "$emoji" ] && echo  || echo 🟢)}"
+icon_off="${icon_off:-$([ -z "$emoji" ] && echo  || echo 🔴)}"
+icon_section="${icon_section:-$([ -z "$emoji" ] && echo  || echo 📂)}"
+icon_camera="${icon_camera:-$([ -z "$emoji" ] && echo 󰋩 || echo 📷)}"
+icon_screen="${icon_screen:-$([ -z "$emoji" ] && echo 󰍹 || echo 🖥️)}"
+icon_mixer="${icon_mixer:-$([ -z "$emoji" ] && echo 󰕾 || echo 🎚️)}"
+
+# Function to parse wpctl output and get audio devices
+parse_wpctl_status() {
+    local type="$1"
+    local output
+    output=$(wpctl status)
+    
+    # Extract the section for the requested type (Sinks or Sources)
+    section=$(echo "$output" | awk -v section="$type:" '
+        BEGIN { found=0; }
+        $0 ~ section { found=1; next; }
+        found && /^$/ { found=0; }
+        found && /^[[:space:]]*├─|[[:space:]]*└─/ { found=0; }
+        found { 
+            # Eliminar caracteres del árbol ASCII y espacios iniciales
+            gsub(/[│├└─*]/, "", $0);
+            gsub(/^[[:space:]]+/, "", $0);
+            # Mostrar solo líneas no vacías
+            if ($0) print;
+        }
+    ')
+    
+    # Clean up the output and format it for wofi
+    echo "$section" | sed 's/[│├└─]//g' | sed 's/^[ \t]*//' | \
+        awk '
+            NF > 0 {
+                # Extract the device ID and name
+                id_part = $1
+                gsub(/[^0-9]/, "", id_part)
+                
+                # Extract the name part (remove volume info)
+                $1=""
+                name = $0
+                sub(/^\s+/, "", name)
+                sub(/\[vol:.*$/, "", name)
+                
+                # Mark default device
+                if (name ~ /^\*/) {
+                    gsub(/\*/, "", name)
+                    name = name " - Default"
+                }
+                
+                print id_part ":" name
+            }
+        '
+}
+
+# Function to get active audio applications
+parse_audio_apps() {
+    local output
+    output=$(wpctl status)
+    
+    # Extract the Links section which shows active audio connections
+    section=$(echo "$output" | awk '
+        BEGIN { found=0; }
+        /Streams:/ { found=1; next; }
+        found && /^$/ { found=0; }
+        found && /^[[:space:]]*├─|[[:space:]]*└─/ { found=0; }
+        found { 
+            # Eliminar caracteres del árbol ASCII y espacios iniciales
+            gsub(/[│├└─*]/, "", $0);
+            gsub(/^[[:space:]]+/, "", $0);
+            # Mostrar solo líneas no vacías
+            if ($0) print;
+        }
+    ')
+    echo "$section"
+
+    
+    # Parse out the application and its target
+    echo "$section" | awk '
+            NF > 0 {
+                # Extract the link ID and details
+                id_part = $1
+                gsub(/[^0-9]/, "", id_part)
+                
+                # Get the rest of the line which contains app info
+                $1=""
+                info = $0
+                sub(/^\s+/, "", info)
+                
+                # Extract app name and target
+                if (info ~ / -> /) {
+                    split(info, parts, " -> ")
+                    app_name = parts[1]
+                    target = parts[2]
+                    # Clean up app name (remove volume info)
+                    sub(/\[vol:.*$/, "", app_name)
+                    print id_part ":" app_name ":" target
+                }
+            }
+        '
+}
+
+# Function to get video input devices (webcams)
+parse_video_inputs() {
+    if command -v v4l2-ctl &>/dev/null; then
+        v4l2-ctl --list-devices | awk '
+        BEGIN { dev=""; }
+        /^[^[:space:]]/ { 
+            dev=$0; 
+            gsub(/:$/, "", dev);
+        }
+        /\/dev\/video[0-9]+/ { 
+            if (dev != "") {
+                print $1 ":" dev;
+                dev="";
+            }
+        }'
+    else
+        echo ""
+    fi
+}
+
+# Function to get video output devices (monitors)
+parse_video_outputs() {
+    if command -v xrandr &>/dev/null; then
+        xrandr --query | awk '
+        / connected/ {
+            name=$1;
+            if ($2 == "connected") {
+                status="connected";
+                if ($3 == "primary") {
+                    status="primary";
+                }
+            } else {
+                status="disconnected";
+            }
+            print name ":" status;
+        }'
+    else
+        echo ""
+    fi
+}
+
+# Function to set default audio device
+set_default_audio_device() {
+    local device_id="$1"
+    local device_type="$2"
+    local device_name="$3"
+    
+    if wpctl set-default "$device_id"; then
+        notify-send "$tr_notice_changed_summary" "$(printf "$tr_notice_changed_body" "$device_type" "$device_name")"
+        return 0
+    else
+        notify-send "$tr_notice_error_summary" "$(printf "$tr_notice_error_body" "$device_type")" -u critical
+        return 1
+    fi
+}
+
+# Function to set default video device
+set_default_video_device() {
+    local device_id="$1"
+    local device_type="$2"
+    local device_name="$3"
+    
+    if [[ "$device_type" == "output" ]]; then
+        # Set primary monitor
+        if xrandr --output "$device_id" --primary; then
+            notify-send "$tr_notice_changed_summary" "Monitor primario establecido: $device_name"
+            return 0
+        else
+            notify-send "$tr_notice_error_summary" "Error al establecer monitor primario" -u critical
+            return 1
+        fi
+    else
+        # For video input, we just notify the selection as default camera needs to be set in specific apps
+        notify-send "$tr_video_select" "Cámara seleccionada: $device_name"
+        return 0
+    fi
+}
+
+# Function to display the main menu with inputs, outputs, and apps
+display_main_menu() {
+    local audio_inputs="$1"
+    local audio_outputs="$2"
+    local apps="$3"
+    local formatted=""
+    
+    # Add audio inputs section
+    formatted="${formatted}$icon_mixer  ${tr_pavucontrol}\n"
+
+    formatted="${formatted}$icon_section  <b>${tr_inputs_category}</b>\n"
+    if [[ -n "$audio_inputs" ]]; then
+        while IFS=: read -r id name; do
+            if [[ "$name" == *"- Default"* ]]; then
+                formatted="${formatted}$icon_check  ${name} [audio-in:$id]\n"
+            else
+                formatted="${formatted}$icon_input  ${name} [audio-in:$id]\n"
+            fi
+        done <<< "$audio_inputs"
+    else
+        formatted="${formatted}$icon_off  ${tr_no_devices_found//%s/entradas de audio}\n"
+    fi
+    
+    # Add audio outputs section
+    formatted="${formatted}$icon_section  <b>${tr_outputs_category}</b>\n"
+    if [[ -n "$audio_outputs" ]]; then
+        while IFS=: read -r id name; do
+            if [[ "$name" == *"- Default"* ]]; then
+                formatted="${formatted}$icon_check  ${name} [audio-out:$id]\n"
+            else
+                formatted="${formatted}$icon_output  ${name} [audio-out:$id]\n"
+            fi
+        done <<< "$audio_outputs"
+    else
+        formatted="${formatted}$icon_off  ${tr_no_devices_found//%s/salidas de audio}\n"
+    fi
+    
+    
+    # # Add apps section
+    # formatted="${formatted}$icon_section  <b>${tr_apps_category}</b>\n"
+    # if [[ -n "$apps" ]]; then
+    #     while IFS=: read -r id name target; do
+    #         formatted="${formatted}$icon_app  ${name} → ${target} [app:$id]\n"
+    #     done <<< "$apps"
+    # else
+    #     formatted="${formatted}$icon_off  ${tr_no_apps_found}\n"
+    # fi
+      # Add pavucontrol option as the last option
+    
+    # Add close option
+    formatted="${formatted}$icon_close"
+    
+    # Show the menu
+    echo -e "$formatted" | wofi --show dmenu \
+        --allow-markup \
+        --prompt="$tr_main_menu_prompt" \
+        --no-actions
+}
+
+# Function to redirect an app to a new audio device
+select_app_target() {
+    local app_name="$1"
+    local app_id="$2"
+    local outputs="$3"
+    local formatted=""
+    
+    # Format outputs for selection
+    while IFS=: read -r id name; do
+        if [[ "$name" == *"- Default"* ]]; then
+            formatted="${formatted}<b>$icon_check  ${name}</b>\n"
+        else
+            formatted="${formatted}$icon_output  ${name}\n"
+        fi
+    done <<< "$outputs"
+    
+    # Add close option
+    formatted="${formatted}$icon_close"
+    
+    # Show the menu
+    selected=$(echo -e "$formatted" | wofi --show dmenu \
+        --allow-markup \
+        --prompt="$tr_select_target_prompt $app_name")
+    
+    [[ -z "$selected" ]] && return
+    [[ "$selected" == "$icon_close" ]] && return
+    
+    # Strip formatting from selection
+    selected=${selected#$icon_output  }
+    selected=${selected#$icon_check  }
+    selected=${selected#<b>$icon_check  }
+    selected=${selected%</b>}
+    
+    # Find the device ID for the selected output
+    local target_id=""
+    while IFS=: read -r id name; do
+        if [[ "$name" == "$selected" ]]; then
+            target_id="$id"
+            break
+        fi
+    done <<< "$outputs"
+    
+    # Move the app to the selected output
+    if [[ -n "$target_id" ]]; then
+        wpctl move "$app_id" "$target_id"
+        notify-send "$tr_notice_changed_summary" "$(printf "$tr_notice_app_moved_body" "$app_name" "$selected")"
+    else
+        notify-send "$tr_notice_error_summary" "No se pudo encontrar el dispositivo de destino" -u critical
+    fi
+}
+
+# Main function
+main() {
+    # Get audio and video devices
+    audio_inputs=$(parse_wpctl_status "Sources")
+    audio_outputs=$(parse_wpctl_status "Sinks")
+    # apps=$(parse_audio_apps)
+    
+    # Display the main menu
+    selected=$(display_main_menu "$audio_inputs" "$audio_outputs")
+    
+    [[ -z "$selected" ]] && exit 0
+    [[ "$selected" == "$icon_close" ]] && exit 0
+    
+    # Extract device info from the selection
+    if [[ "$selected" == *"[audio-in:"* ]]; then
+        device_id=$(echo "$selected" | sed -n 's/.*\[audio-in:\([0-9]*\)\]/\1/p')
+        device_name=$(echo "$selected" | sed 's/ \[audio-in:[0-9]*\]$//')
+        # Remove icon from device name
+        device_name=${device_name#$icon_input  }
+        device_name=${device_name#$icon_check  }
+        set_default_audio_device "$device_id" "audio input" "$device_name"
+        
+    elif [[ "$selected" == *"[audio-out:"* ]]; then
+        device_id=$(echo "$selected" | sed -n 's/.*\[audio-out:\([0-9]*\)\]/\1/p')
+        device_name=$(echo "$selected" | sed 's/ \[audio-out:[0-9]*\]$//')
+        # Remove icon from device name
+        device_name=${device_name#$icon_output  }
+        device_name=${device_name#$icon_check  }
+        set_default_audio_device "$device_id" "audio output" "$device_name"
+    elif [[ "$selected" == "$icon_mixer  ${tr_pavucontrol}" ]]; then
+        # Launch pavucontrol
+        pavucontrol 2>/dev/null >> /dev/null &
+
+    fi
+    exit 0
+}
+
+# Execute main function
+main

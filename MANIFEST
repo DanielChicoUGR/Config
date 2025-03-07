@@ -18,6 +18,8 @@ spotify-launcher.conf|symlink|.config
 
 wofiScripts/wofi-mainmenu|symlink|.local/bin
 wofiScripts/wofi-power-menu|symlink|.local/bin
+wofiScripts/wofi-audio|symlink|.local/bin
+wofiScripts/wofi-layout|symlink|.local/bin
 # wofiScripts/wofi-wallpaper|symlink|.local/bin/
 wofiScripts/wofi-wallpaper-variety|symlink|.local/bin
 wofiScripts/wofi-web-launcher|symlink|.local/bin

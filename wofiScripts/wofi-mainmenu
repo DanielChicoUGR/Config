@@ -18,6 +18,7 @@ if $use_icons; then
     wifi="    Wi-Fi"
     bluetooth="   Bluetooth"
     wallpaper="󰸉   Wallpaper"
+    audio="󰋎   Audio Manager"
     web_launcher="󰜏  Web Launcher"
 else
     powermenu=" Powermenu"
@@ -25,10 +26,11 @@ else
     bluetooth=" Bluetooth"
     wallpaper="Wallpaper"
     web_launcher="Web Launcher"
+    audio="Audio Manager"
 fi
 
 open_menu() {
-    options="$powermenu\n$wifi\n$bluetooth\n$wallpaper\n$web_launcher"
+    options="$powermenu\n$wifi\n$audio\n$bluetooth\n$wallpaper\n$web_launcher"
 
     chosen="$(echo -e "$options" | $wofi_command --prompt "Choose a Menu to Open ")"
     case $chosen in
@@ -37,7 +39,7 @@ open_menu() {
             notify-send "Opening Powermenu "
             $HOME/.local/bin/wofi-power-menu
         else
-            exit
+            exit 1
         fi
         ;;
     $wifi)
@@ -45,7 +47,7 @@ open_menu() {
             notify-send "Opening Wi-Fi menu"
             $HOME/.local/bin/wofi-wifi-menu
         else
-            exit
+            exit 1
         fi
         ;;
     $bluetooth)
@@ -53,15 +55,23 @@ open_menu() {
             notify-send "Opening Blueman-Manager"
             blueman-manager
         else
-            exit
+            exit 1
         fi
         ;;
+    $audio)
+    	if [[ "$?" == 0 ]]; then
+           	notify-send "Audio Menu"
+			$HOME/.local/bin/wofi-audio
+    	else
+    	    exit 1
+	    fi
+ 	;;
     $wallpaper)
         if [[ "$?" == 0 ]]; then
             notify-send "Opening Wallpaper menu"
             $HOME/.local/bin/wofi-wallpaper-variety
         else
-            exit
+            exit 1
         fi
         ;;
     $web_launcher)
@@ -69,7 +79,7 @@ open_menu() {
             notify-send "Opening Web Launcher"
             $HOME/.local/bin/wofi-web-launcher
         else
-            exit
+            exit 1
         fi
         ;;
     esac
