@@ -1,0 +1,80 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "assistant": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4o"
+    },
+    "version": "2"
+  },
+  "base_keymap": "VSCode",
+  "vim_mode": false,
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "theme": {
+    "mode": "system",
+    "light": "One Dark",
+    "dark": "One Dark"
+  },
+  "auto_update": true,
+  "auto_update_channel": "stable",
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 500
+    }
+  },
+  "use_autoclose": true,
+  "git": {
+    "git_gutter": null,
+    "gutter_debounce": null,
+    "inline_blame": null
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true
+  },
+
+  "inline_completions": {
+    "disabled_globs": [
+      "**/.env*",
+      "**/*.pem",
+      "**/*.key",
+      "**/*.cert",
+      "**/*.crt",
+      "**/secrets.yml"
+    ]
+  },
+  "buffer_font_fallbacks": ["Iosevka Nerd Font"],
+
+  "format_on_save": "on"
+  // "languages": {
+  //   "C++": {
+  //     "formatter": {
+  //       "name": "clang-format",
+  //       "args": ["-style=Google"]
+  //     },
+  //     "tasks":{
+  //       "build": {
+  //         "command": "g++",
+  //         "args": ["-std=c++17", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-o", "${file_base_name}", "${file_name}"],
+  //         "problemMatcher": "$gcc"
+  //       },
+  //       "run": {
+  //         "command": "./${file_base_name}"
+  //       }
+  //     }
+
+  //   }
+}

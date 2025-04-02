@@ -10,7 +10,7 @@
     "margin-right": 10,
     "spacing": 5, // Gaps between modules (4px)
     "modules-left": [
-        "custom/rofi",
+        // "custom/rofi",
         "hyprland/workspaces",
         "hyprland/submap",
         //"idle_inhibitor",
@@ -22,12 +22,12 @@
         "custom/weather"
     ],
     "modules-right": [
-        "cava",
+        // "cava",
         // "backlight",
+        "cpu",
         "custom/storage",
         "memory",
         "network",
-        // "cpu",
         "battery",
         // "pulseaudio",
         "wireplumber",
@@ -46,17 +46,29 @@
         "format": " |",
         "tooltip": false
     },
-    "custom/rofi": {
-        "format": "",
-        "tooltip": false,
-        "on-click-right": "nwg-drawer",
-        "on-click": "$HOME/.config/rofi/applets/bin/keybindsHelp.sh",
-        "on-click-middle": "pkill -9 wofi"
-    },
+    // "custom/rofi": {
+    //     "format": "",
+    //     "tooltip": false,
+    //     "on-click-right": "nwg-drawer",
+    //     "on-click": "$HOME/.config/rofi/applets/bin/keybindsHelp.sh",
+    //     "on-click-middle": "pkill -9 wofi"
+    // },
     "custom/screenshot_t": {
         "format": " ",
         "on-click": "~/.config/hypr/scripts/screenshot_full",
         "on-click-right": "~/.config/hypr/scripts/screenshot_area"
+    },
+    "clock": {
+        "format": "  {:%H:%M   %e %b}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "today-format": "<b>{}</b>"
+    },
+    "clock#date": {
+        "format": "󰥔  {:%H:%M \n %e %b}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "today-format": "<b>{}</b>",
+        "on-click": "gsimplecal"
+
     },
     "clock#1": {
         "format": " {:%a}",
@@ -177,30 +189,13 @@
         "max-length": 5,
         "min-length": 3
     },
-    "custom/spotify": {
-        "exec": "~/.config/waybar/mediaplayer.py --player spotify",
-        "format": "{}  ",
-        "return-type": "json",
-        // "on-click": "~/.config/rofi/applets/bin/playerctl.sh",
-        "on-click": "playerctl play-pause",
-        "on-scroll-up": "playerctl next",
-        "on-scroll-down": "playerctl previous"
-    },
+
     "custom/power": {
         "format": " 󰐥 ",
         "tooltip": false,
         "on-click": "wlogout -s"
     },
-    "clock": {
-        "format": "  {:%H:%M   %e %b}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "today-format": "<b>{}</b>"
-    },
-    "clock#date": {
-        "format": "󰥔  {:%H:%M \n %e %b}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "today-format": "<b>{}</b>"
-    },
+
     "custom/gammastep": {
         "interval": 5,
         "return-type": "json",
@@ -272,7 +267,7 @@
         "player-icons": {
             "default": "▶",
             "mpv": "🎵",
-            "spotify": "",
+            "spotify": " ",
             // "spotify": "\udb81\udcc7  ",
         },
         "status-icons": {

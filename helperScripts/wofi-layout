@@ -1,0 +1,135 @@
+#!/bin/bash
+# filepath: /home/daniel/.repos/Config/wofiScripts/wofi-layout
+
+# ┌─┐┌─┐┌┐┌┌─┐┬┌─┐┬ ┬┬─┐┌─┐┌─┐┬┌─┐┌┐┌  ┌┬┐┌─┐  ┌┬┐┌─┐┌┐┌┬┌┬┐┌─┐┬─┐┌─┐┌─┐
+# │  │ ││││├┤ ││ ┬│ │├┬┘├─┤│  ││ ││││   │││ │  ││││ │││││ │ │ │├┬┘├┤ └─┐
+# └─┘└─┘┘└┘└  ┴└─┘└─┘┴└─┴ ┴└─┘┴└─┘┘└┘  ─┴┘└─┘  ┴ ┴└─┘┘└┘┴ ┴ └─┘┴└─└─┘└─┘
+
+# Iconos para el menú y notificaciones
+LAPTOP_ICON=" "
+MONITOR_ICON="󰍹 "
+DUAL_ICON="󰍺 "
+MIRROR_ICON=" "
+
+# Ruta del icono para notificaciones
+ICON_PATH="${XDG_CONFIG_HOME:-$HOME/.repos}/Config/wofiScripts/images/screen.png"
+
+# Obtener información de monitores conectados
+get_monitors() {
+    hyprctl monitors all -j | jq -r '.[] | .name'
+}
+
+# Función para usar solo la laptop
+use_laptop_only() {
+    local all_monitors=($(get_monitors))
+    local laptop_monitor="${all_monitors[0]}"  # Asumimos que el primer monitor es la laptop
+    
+    # Desactivar todos los monitores excepto la laptop
+    for monitor in "${all_monitors[@]}"; do
+        if [[ "$monitor" != "$laptop_monitor" ]]; then
+            hyprctl keyword monitor ${monitor},disable
+        fi
+    done
+    
+    # Activar solo la laptop
+    hyprctl keyword monitor ${laptop_monitor},highres,auto,1
+    
+    notify-send -i "$ICON_PATH" "Monitor" "Usando solo pantalla de laptop"
+}
+
+# Función para usar solo monitor externo
+use_external_only() {
+    local all_monitors=($(get_monitors))
+    
+    # Si hay más de un monitor
+    if [ ${#all_monitors[@]} -gt 1 ]; then
+        local external_monitor="${all_monitors[1]}"  # Asumimos que el segundo monitor es externo
+        
+        # Desactivar todos los monitores excepto el externo
+        for monitor in "${all_monitors[@]}"; do
+            if [[ "$monitor" != "$external_monitor" ]]; then
+                hyprctl keyword monitor ${monitor},disable
+            fi
+        done
+        
+        # Activar solo el monitor externo
+        hyprctl keyword monitor ${external_monitor},highres,auto,1
+        
+        notify-send -i "$ICON_PATH" "Monitor" "Usando solo monitor externo"
+    else
+        notify-send -i "$ICON_PATH" "Monitor" "No hay monitor externo conectado"
+    fi
+}
+
+# Función para configuración extendida (todos los monitores activos)
+setup_extended() {
+    local all_monitors=($(get_monitors))
+    local x_pos=0
+    
+    for monitor in "${all_monitors[@]}"; do
+        hyprctl keyword monitor ${monitor},highres,auto,1
+        # x_pos=$((x_pos+1920))  # Asumimos 1920px de ancho para los cálculos
+    done
+    
+    notify-send -i "$ICON_PATH" "Monitor" "Configuración expandida activada"
+}
+
+# Función para configuración en espejo
+setup_mirror() {
+    local all_monitors=($(get_monitors))
+    local first_monitor="${all_monitors[0]}"
+    
+    # Configurar el primer monitor normalmente
+    hyprctl keyword monitor ${first_monitor},preferred,0x0,1
+    
+    # Configurar los demás monitores como espejo del primero
+    for monitor in "${all_monitors[@]:1}"; do
+        hyprctl keyword monitor ${monitor},preferred,0x0,1,mirror,${first_monitor}
+    done
+    
+    notify-send -i "$ICON_PATH" "Monitor" "Configuración en espejo activada"
+}
+
+# Menú principal
+main_menu() {
+    local all_monitors=($(get_monitors))
+    
+    # Crear opciones con iconos
+    local options=(
+        "$LAPTOP_ICON Solo Laptop"
+        "$MONITOR_ICON Solo Monitor Externo"
+        "$DUAL_ICON Pantalla Dual"
+        "$MIRROR_ICON Pantallas en Espejo"
+    )
+    
+    # Mostrar menú con wofi
+    local choice=$(printf "%s\n" "${options[@]}" | wofi --dmenu --prompt="Configuración de Monitores" --lines=${options[@]} --width=350)
+    
+    case "$choice" in
+        "$LAPTOP_ICON Solo Laptop")
+            use_laptop_only
+            ;;
+        "$MONITOR_ICON Solo Monitor Externo")
+            use_external_only
+            ;;
+        "$DUAL_ICON Pantalla Dual")
+            setup_extended
+            ;;
+        "$MIRROR_ICON Pantallas en Espejo")
+            setup_mirror
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+}
+
+# Verificar si hay múltiples monitores
+monitor_count=$(get_monitors | wc -l)
+if [ "$monitor_count" -lt 2 ]; then
+    notify-send -i "$ICON_PATH" "Monitor" "Solo hay un monitor conectado"
+    exit 0
+fi
+
+# Ejecutar el menú principal
+main_menu

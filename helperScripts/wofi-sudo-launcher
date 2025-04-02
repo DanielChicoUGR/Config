@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# filepath: /home/daniel/.repos/Config/wofiScripts/wofi_sudo_launcher
+
+# Verificar dependencias
+for cmd in wofi zenity notify-send; do
+    if ! command -v "$cmd" &> /dev/null; then
+        notify-send "Error" "Falta el comando $cmd" -u critical
+        exit 1
+    fi
+done
+
+icon_close="󰅖"
+
+
+# Wofi configuration files
+CONFIG="${WOFI_CONFIG:-$HOME/.config/wofi/config}"
+STYLE="${WOFI_STYLE:-$HOME/.config/wofi/style.css}"
+
+# # Wofi commands
+# wofi_command="wofi --show dmenu --conf ${CONFIG} --style ${STYLE} --width=600 --height=255"
+# wofi_confirm="wofi --show dmenu --conf ${CONFIG} --style ${STYLE} --width=600 --height=131"
+
+
+# Common applications that might need sudo privileges
+APPLICATIONS=(
+    "Terminal (root):x-terminal-emulator"
+    "File Manager (root):nautilus"
+    "Text Editor (root):naugedit"
+    "Custom Command:custom"
+)
+
+# Function to execute application with sudo
+run_with_sudo() {
+    local app_name="$1"
+    local app_cmd="$2"
+    
+    # For custom command
+    if [ "$app_cmd" = "custom" ]; then
+        app_cmd=$(wofi --show dmenu --prompt "Enter command to run with sudo:" --conf ${CONFIG} --style ${STYLE} --width 500)
+        
+        # Exit if no command provided
+        [ -z "$app_cmd" ] && return
+        
+        app_name="$app_cmd"
+    fi
+    
+    # Request password with zenity
+    local password=$(zenity --password --title="Sudo Authentication Required" --text="Enter your password to run '$app_name' with root privileges:")
+    
+    # Exit if cancelled
+    [ -z "$password" ] && {
+        notify-send "Cancelled" "Authentication cancelled by user"
+        return
+    }
+    
+    # Try to execute the command with sudo
+    if echo "$password" | sudo -S -k -p "" true 2>/dev/null; then
+        notify-send "Sudo Launcher" "Starting $app_name with sudo privileges..." -i dialog-password
+        
+        # Launch application in background to avoid blocking wofi
+        (echo "$password" | sudo -S -k -p "" $app_cmd &>/dev/null &)
+    else
+        notify-send "Authentication Error" "Incorrect password or sudo issue" -u critical
+    fi
+}
+
+# Generate menu list
+menu_items=""
+for app in "${APPLICATIONS[@]}"; do
+    menu_items+="${app%%:*}\n"
+done
+
+# Show wofi menu
+selected=$(echo -e "$menu_items" | wofi --show dmenu --prompt "Select application to run with sudo:" --conf ${CONFIG} --style ${STYLE} --width 400)
+
+# Find and execute the selected app
+for app in "${APPLICATIONS[@]}"; do
+    app_name="${app%%:*}"
+    if [ "$selected" = "$app_name" ]; then
+        app_cmd="${app#*:}"
+        run_with_sudo "$app_name" "$app_cmd"
+        break
+    fi
+done

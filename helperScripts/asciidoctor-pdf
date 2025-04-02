@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+podman run --rm -v $(pwd):/documents/ docker.io/asciidoctor/docker-asciidoctor asciidoctor-pdf $@

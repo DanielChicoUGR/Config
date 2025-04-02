@@ -30,6 +30,13 @@ if test -d ~/.local/bin
 end
 
 
+if test -d ~/go/bin
+    if not contains -- ~/go/bin $PATH
+        set -p PATH ~/go/bin
+    end
+end
+
+
 # Add depot_tools to PATH
 if test -d ~/Applications/depot_tools
     if not contains -- ~/Applications/depot_tools $PATH
@@ -66,6 +73,15 @@ if [ "$fish_key_bindings" = fish_vi_key_bindings ]
 else
     bind ! __history_previous_command
     bind '$' __history_previous_command_arguments
+end
+
+function y
+	set tmp (mktemp -t "yazi-cwd.XXXXXX")
+	yazi $argv --cwd-file="$tmp"
+	if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+		builtin cd -- "$cwd"
+	end
+	rm -f -- "$tmp"
 end
 
 # Fish command history

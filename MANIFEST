@@ -15,13 +15,19 @@ starship.toml|symlink|.config
 code-flags.conf|symlink|.config
 electron-flags.conf|symlink|.config
 spotify-launcher.conf|symlink|.config
+zed|symlink|.config
 
-wofiScripts/wofi-mainmenu|symlink|.local/bin
-wofiScripts/wofi-power-menu|symlink|.local/bin
-wofiScripts/wofi-audio|symlink|.local/bin
-wofiScripts/wofi-layout|symlink|.local/bin
-# wofiScripts/wofi-wallpaper|symlink|.local/bin/
-wofiScripts/wofi-wallpaper-variety|symlink|.local/bin
-wofiScripts/wofi-web-launcher|symlink|.local/bin
-wofiScripts/wofi-wifi-menu|symlink|.local/bin
-wofiScripts/show_keybinds|symlink|.local/bin
+# HelperScript
+helperScripts/wofi-mainmenu|symlink|.local/bin
+helperScripts/wofi-power-menu|symlink|.local/bin
+helperScripts/wofi-audio|symlink|.local/bin
+helperScripts/wofi-layout|symlink|.local/bin
+helperScripts/wofi-sudo-launcher|symlink|.local/bin
+helperScripts/asciidoctor-pdf|symlink|.local/bin
+# helperScripts/wofi-wallpaper|symlink|.local/bin/
+helperScripts/wofi-wallpaper-variety|symlink|.local/bin
+helperScripts/wofi-web-launcher|symlink|.local/bin
+helperScripts/wofi-wifi-menu|symlink|.local/bin
+helperScripts/show_keybinds|symlink|.local/bin
+
+

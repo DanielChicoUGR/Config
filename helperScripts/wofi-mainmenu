@@ -1,0 +1,200 @@
+# #!/usr/bin/env bash
+
+# use_icons=true # Set to false to disable icons
+# # Files for wofi config and styling
+# CONFIG="$HOME/.config/wofi/config"
+# STYLE="$HOME/.config/wofi/style.css"
+
+# wofi_command="wofi --show dmenu
+#     --conf ${CONFIG} --style ${STYLE} \
+#     --width=300 --height=255 \
+#     --halign=center \
+#     --content_halign=center \
+#     --valign=center" 
+
+# # Entries
+# if $use_icons; then
+#     powermenu="   Powermenu"
+#     wifi="    Wi-Fi"
+#     bluetooth="   Bluetooth"
+#     wallpaper="󰸉   Wallpaper"
+#     audio="󰋎   Audio Manager"
+#     web_launcher="󰜏  Web Launcher"
+    
+# else
+#     powermenu=" Powermenu"
+#     wifi="Wi-Fi"
+#     bluetooth=" Bluetooth"
+#     wallpaper="Wallpaper"
+#     web_launcher="Web Launcher"
+#     audio="Audio Manager"
+# fi
+
+# open_menu() {
+#     options="$powermenu\n$wifi\n$audio\n$bluetooth\n$wallpaper\n$web_launcher"
+
+#     chosen="$(echo -e "$options" | $wofi_command --prompt "Choose a Menu to Open ")"
+#     case $chosen in
+#     $powermenu)
+#         if [[ "$?" == 0 ]]; then
+#             notify-send "Opening Powermenu "
+#             $HOME/.local/bin/wofi-power-menu
+#         else
+#             exit 1
+#         fi
+#         ;;
+#     $wifi)
+#         if [[ "$?" == 0 ]]; then
+#             notify-send "Opening Wi-Fi menu"
+#             $HOME/.local/bin/wofi-wifi-menu
+#         else
+#             exit 1
+#         fi
+#         ;;
+#     $bluetooth)
+#         if [[ "$?" == 0 ]]; then
+#             notify-send "Opening Blueman-Manager"
+#             blueman-manager
+#         else
+#             exit 1
+#         fi
+#         ;;
+#     $audio)
+#     	if [[ "$?" == 0 ]]; then
+#            	notify-send "Audio Menu"
+# 			$HOME/.local/bin/wofi-audio
+#     	else
+#     	    exit 1
+# 	    fi
+#  	;;
+#     $wallpaper)
+#         if [[ "$?" == 0 ]]; then
+#             notify-send "Opening Wallpaper menu"
+#             $HOME/.local/bin/wofi-wallpaper-variety
+#         else
+#             exit 1
+#         fi
+#         ;;
+#     $web_launcher)
+#         if [[ "$?" == 0 ]]; then
+#             notify-send "Opening Web Launcher"
+#             $HOME/.local/bin/wofi-web-launcher
+#         else
+#             exit 1
+#         fi
+#         ;;
+#     esac
+# }
+
+# if [[ ! $(pidof wofi) ]]; then
+#     open_menu
+# else
+#     pkill wofi
+# fi
+
+
+
+#!/usr/bin/env bash
+# filepath: /home/daniel/.repos/Config/wofiScripts/wofi-mainmenu
+
+use_icons=true # Set to false to disable icons
+# Files for wofi config and styling
+CONFIG="$HOME/.config/wofi/config"
+STYLE="$HOME/.config/wofi/style.css"
+
+wofi_command="wofi --show dmenu
+    --conf ${CONFIG} --style ${STYLE} \
+    --width=300 --height=285" #\
+# --halign=center \
+# --content_halign=center \
+# --valign=center"
+
+# Entries
+if $use_icons; then
+
+    powermenu="  Powermenu"
+    wifi="  Wi-Fi"
+    bluetooth=" Bluetooth"
+    wallpaper="󰸉  Wallpaper"
+    audio="󰋎  Audio Manager"
+    web_launcher="󰜏  Web Launcher"
+    layout="󰍹  Monitores"
+else
+    powermenu=" Powermenu"
+    wifi="Wi-Fi"
+    bluetooth=" Bluetooth"
+    wallpaper="Wallpaper"
+    web_launcher="Web Launcher"
+    audio="Audio Manager"
+    layout="Monitores"
+fi
+
+open_menu() {
+    options="$powermenu\n$wifi\n$audio\n$bluetooth\n$wallpaper\n$web_launcher\n$layout"
+
+    chosen="$(echo -e "$options" | $wofi_command --prompt "Choose a Menu to Open ")"
+    case $chosen in
+    $powermenu)
+        if [[ "$?" == 0 ]]; then
+            notify-send "Opening Powermenu "
+            $HOME/.local/bin/wofi-power-menu
+        else
+            exit 1
+        fi
+        ;;
+    $wifi)
+        if [[ "$?" == 0 ]]; then
+            notify-send "Opening Wi-Fi menu"
+            $HOME/.local/bin/wofi-wifi-menu
+        else
+            exit 1
+        fi
+        ;;
+    $bluetooth)
+        if [[ "$?" == 0 ]]; then
+            notify-send "Opening Blueman-Manager"
+            blueman-manager
+        else
+            exit 1
+        fi
+        ;;
+    $audio)
+        if [[ "$?" == 0 ]]; then
+               notify-send "Audio Menu"
+            $HOME/.local/bin/wofi-audio
+        else
+            exit 1
+        fi
+     ;;
+    $wallpaper)
+        if [[ "$?" == 0 ]]; then
+            notify-send "Opening Wallpaper menu"
+            $HOME/.local/bin/wofi-wallpaper-variety
+        else
+            exit 1
+        fi
+        ;;
+    $web_launcher)
+        if [[ "$?" == 0 ]]; then
+            notify-send "Opening Web Launcher"
+            $HOME/.local/bin/wofi-web-launcher
+        else
+            exit 1
+        fi
+        ;;
+    $layout)
+        if [[ "$?" == 0 ]]; then
+            notify-send "Opening Sudo Launcher"
+            $HOME/.local/bin/wofi-layout
+        else
+            exit 1
+        fi
+        ;;
+    esac
+}
+
+if [[ ! $(pidof wofi) ]]; then
+    open_menu
+else
+    pkill wofi
+fi
