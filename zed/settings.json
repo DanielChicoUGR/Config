@@ -26,6 +26,14 @@
     "light": "One Dark",
     "dark": "One Dark"
   },
+  "languages": {
+    "LaTeX": {
+      
+    },
+    "C++": {
+      
+    }
+  },
   "auto_update": true,
   "auto_update_channel": "stable",
 
@@ -64,5 +72,7 @@
   "telemetry": {
     "diagnostics": false,
     "metrics": false
-  }
+  },
+  
+  
 }
