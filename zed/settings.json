@@ -7,18 +7,28 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "icon_theme": "Colored Zed Icons Theme Light",
   "features": {
     "edit_prediction_provider": "copilot"
   },
-  "assistant": {
+  "agent": {
+    "always_allow_tool_actions": true,
     "default_model": {
       "provider": "copilot_chat",
-      "model": "gpt-4o"
+      "model": "claude-3.7-sonnet-thought"
     },
     "version": "2"
   },
-  "base_keymap": "VSCode",
-  "vim_mode": false,
+  // "base_keymap": "VSCode",
+  "vim_mode": true,
+  "vim": {
+    "use_system_clipboard": true,
+    "normal_mode_readline_bindings": false,
+    "scroll_viewport_with_cursor": true,
+    // Comentar esta línea si prefieres el comportamiento estándar de vim
+    "cursor_blink": false,
+    "relative_line_numbers": true
+  },
   "ui_font_size": 14,
   "buffer_font_size": 14,
   "theme": {
@@ -28,10 +38,10 @@
   },
   "languages": {
     "LaTeX": {
-      
+
     },
     "C++": {
-      
+
     }
   },
   "auto_update": true,
@@ -73,6 +83,6 @@
     "diagnostics": false,
     "metrics": false
   },
-  
-  
+
+
 }

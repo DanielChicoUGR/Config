@@ -6,4 +6,7 @@
 
 # -i --user="$(id -u):$(id -g)"
 
-podman run --rm -v $(pwd):/data mingc/latex pdflatex $@
+program="$(basename $0)"
+args= "$@"
+
+podman run --rm -v $(pwd):/data mingc/latex $program $args

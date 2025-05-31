@@ -8,9 +8,10 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "features": {
-    "edit_prediction_provider": "zed"
+    "edit_prediction_provider": "copilot"
   },
   "assistant": {
+    "always_allow_tool_actions": true,
     "default_model": {
       "provider": "copilot_chat",
       "model": "gpt-4o"
@@ -19,15 +20,25 @@
   },
   "base_keymap": "VSCode",
   "vim_mode": false,
-  "ui_font_size": 16,
-  "buffer_font_size": 16,
+  "ui_font_size": 14,
+  "buffer_font_size": 14,
   "theme": {
     "mode": "system",
     "light": "One Dark",
     "dark": "One Dark"
   },
+  "languages": {
+    "LaTeX": {
+      
+    },
+    "C++": {
+      
+    }
+  },
   "auto_update": true,
   "auto_update_channel": "stable",
+
+  "format_on_save": "on",
   "autosave": {
     "after_delay": {
       "milliseconds": 500
@@ -46,7 +57,7 @@
     "show_other_hints": true
   },
 
-  "inline_completions": {
+  "edit_predictions": {
     "disabled_globs": [
       "**/.env*",
       "**/*.pem",
@@ -56,25 +67,13 @@
       "**/secrets.yml"
     ]
   },
+
   "buffer_font_fallbacks": ["Iosevka Nerd Font"],
 
-  "format_on_save": "on"
-  // "languages": {
-  //   "C++": {
-  //     "formatter": {
-  //       "name": "clang-format",
-  //       "args": ["-style=Google"]
-  //     },
-  //     "tasks":{
-  //       "build": {
-  //         "command": "g++",
-  //         "args": ["-std=c++17", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-o", "${file_base_name}", "${file_name}"],
-  //         "problemMatcher": "$gcc"
-  //       },
-  //       "run": {
-  //         "command": "./${file_base_name}"
-  //       }
-  //     }
-
-  //   }
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  
+  
 }

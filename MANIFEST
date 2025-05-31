@@ -10,12 +10,16 @@ spotify/spotify|symlink|.local/bin/
 spotify/spotify.desktop|symlink|.local/share/applications
 obsidianDesktop/obsidian.desktop|symlink|.local/share/applications
 obsidianDesktop/obsidian.png|symlink|.local/share/applications/icons
-latex/latex|symlink|.local/bin/
+latex/latex|symlink-R|.local/bin/pdflatex
+latex/latex|symlink-R|.local/bin/bibtex
+
 starship.toml|symlink|.config
 code-flags.conf|symlink|.config
 electron-flags.conf|symlink|.config
 spotify-launcher.conf|symlink|.config
 zed|symlink|.config
+nvim|symlink|.config
+
 
 # HelperScript
 helperScripts/wofi-mainmenu|symlink|.local/bin

@@ -28,6 +28,26 @@ symlinkFile() {
     echo "[OK] $filename -> $destination"
 }
 
+symlinkFile-R() {
+    filename="$SCRIPT_DIR/$1"
+    destination="$HOME/$2"
+
+    mkdir -p $(dirname "$destination")
+
+    if [ -L "$destination" ]; then
+        echo "[WARNING] $filename already symlinked"
+        return
+    fi
+
+    if [ -e "$destination" ]; then
+        echo "[ERROR] $destination exists but it's not a symlink. Please fix that manually"
+        exit 1
+    fi
+
+    ln -s "$filename" "$destination"
+    echo "[OK] $filename -> $destination"
+}
+
 deployManifest() {
     for row in $(cat $SCRIPT_DIR/$1); do
         if [[ "$row" =~ ^#.* ]]; then
@@ -42,6 +62,11 @@ deployManifest() {
             symlink)
                 symlinkFile $filename $destination
                 ;;
+            symlink-R) 
+            # create a symlinc with a custon name
+                symlinkFile-R $filename $destination
+                ;;
+
 
             *)
                 echo "[WARNING] Unknown operation $operation. Skipping..."
