@@ -12,23 +12,24 @@ obsidianDesktop/obsidian.desktop|symlink|.local/share/applications
 obsidianDesktop/obsidian.png|symlink|.local/share/applications/icons
 latex/latex|symlink-R|.local/bin/pdflatex
 latex/latex|symlink-R|.local/bin/bibtex
-tmux|symlink|.config
+tmux/tmux.conf|symlink-R|.tmux.conf
 starship.toml|symlink|.config
 code-flags.conf|symlink|.config
 electron-flags.conf|symlink|.config
 spotify-launcher.conf|symlink|.config
 zed|symlink|.config
-nvim|symlink|.config
+#nvimChadrc|symlink-R|.config/nvim
+mynvim|symlink-R|.config/nvim
 
 
-# HelperScript
+#HelperScript
 helperScripts/wofi-mainmenu|symlink|.local/bin
 helperScripts/wofi-power-menu|symlink|.local/bin
 helperScripts/wofi-audio|symlink|.local/bin
 helperScripts/wofi-layout|symlink|.local/bin
 helperScripts/wofi-sudo-launcher|symlink|.local/bin
 helperScripts/asciidoctor-pdf|symlink|.local/bin
-# helperScripts/wofi-wallpaper|symlink|.local/bin/
+#helperScripts/wofi-wallpaper|symlink|.local/bin/
 helperScripts/wofi-wallpaper-variety|symlink|.local/bin
 helperScripts/wofi-web-launcher|symlink|.local/bin
 helperScripts/wofi-wifi-menu|symlink|.local/bin
