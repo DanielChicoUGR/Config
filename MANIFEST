@@ -12,6 +12,7 @@ obsidianDesktop/obsidian.desktop|symlink|.local/share/applications
 obsidianDesktop/obsidian.png|symlink|.local/share/applications/icons
 latex/latex|symlink-R|.local/bin/pdflatex
 latex/latex|symlink-R|.local/bin/bibtex
+latex/latex|symlink-R|.local/bin/latexmk
 tmux/tmux.conf|symlink-R|.tmux.conf
 starship.toml|symlink|.config
 code-flags.conf|symlink|.config
