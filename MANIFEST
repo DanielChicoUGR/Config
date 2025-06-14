@@ -6,8 +6,8 @@ swaylock|symlink|.config
 swappy|symlink|.config
 mako|symlink|.config
 micro|symlink|.config
-spotify/spotify|symlink|.local/bin/
-spotify/spotify.desktop|symlink|.local/share/applications
+#spotify/spotify|symlink|.local/bin/
+#spotify/spotify.desktop|symlink|.local/share/applications
 obsidianDesktop/obsidian.desktop|symlink|.local/share/applications
 obsidianDesktop/obsidian.png|symlink|.local/share/applications/icons
 latex/latex|symlink-R|.local/bin/pdflatex
@@ -21,7 +21,8 @@ spotify-launcher.conf|symlink|.config
 zed|symlink|.config
 #nvimChadrc|symlink-R|.config/nvim
 mynvim|symlink-R|.config/nvim
-
+alacritty|symlink|.config
+.gitconfig|symlink|
 
 #HelperScript
 helperScripts/wofi-mainmenu|symlink|.local/bin

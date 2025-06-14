@@ -36,6 +36,13 @@ if test -d ~/go/bin
     end
 end
 
+if test -d ~/.cargo/bin
+    if not contains -- ~/.cargo/bin $PATH
+        set -p PATH ~/.cargo/bin
+    end
+end
+
+
 
 # Add depot_tools to PATH
 if test -d ~/Applications/depot_tools
