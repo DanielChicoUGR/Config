@@ -23,6 +23,7 @@ zed|symlink|.config
 mynvim|symlink-R|.config/nvim
 alacritty|symlink|.config
 .gitconfig|symlink|
+.condarc|symlink|
 
 #HelperScript
 helperScripts/wofi-mainmenu|symlink|.local/bin

@@ -5,18 +5,32 @@
 # [╰─cmd────❯](bold green)
 # """
 
-format = """$os$username$hostname$battery$directory
-$character"""
+format = """$os$battery$directory$conda
+$sudo$character"""
+# continuation_prompt = "[∙](bright-black) "
+
+# format = """$os$username$hostname$battery$directory
+# $character"""
 right_format = """$git_branch\
 $git_state\
-$git_status
-$all
+$git_status\
+$package\
+$c\
+$cmake\
+$java\
+$golang\
+
+$meson\
+$jobs\
+$kotlin\
+$lua\
+$bun
 $time
 """
 
 [time]
 disabled = false
-time_format = "%R" # Hour:Minute Format
+time_format = "%R"   # Hour:Minute Format
 style = "bold white"
 # format = '  $time($style)'
 format = '\[  [$time]($style)\]'
@@ -27,6 +41,13 @@ style_root = "red bold"
 format = "[$user]($style) "
 disabled = false
 show_always = true
+
+# ~/.config/starship.toml
+
+[sudo]
+style = 'italic green'
+# symbol = '👩‍💻 '
+disabled = false
 
 [hostname]
 ssh_symbol = " "
@@ -39,7 +60,6 @@ disabled = false
 [character] # The name of the module we are configuring is "character"
 success_symbol = "[➜](bold green)" # The "success_symbol" segment is being set to "➜" with the color "bold green"
 error_symbol = "[✗](bold red)"
-
 
 
 [battery]
@@ -55,11 +75,13 @@ threshold = 60
 # configure directory
 [directory]
 read_only = " 󰌾 "
-# truncation_length = 10
-truncation_length = 3
-truncation_symbol = "../"
-truncate_to_repo = true    # truncates directory to root folder if in github repo
-style = "bold italic blue"
+truncation_length = 10
+# truncation_length = 3
+truncation_symbol = ".../"
+truncate_to_repo = false               # truncates directory to root folder if in github repo
+before_repo_root_style = "italic blue"
+repo_root_style = "bold italic yellow"
+style = "italic blue"
 
 [directory.substitutions]
 "Documentos" = "󰈙 "
@@ -84,9 +106,11 @@ format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
 [conda]
 # symbol = " "
 symbol = '🅒 '
-format = '\[[$symbol$environment]($style)\]'
+# symbol = 'PyEnv:'
+# format = 'in [$symbol$environment]($style)'
+format = 'in [$environment]($style)'
 ignore_base = false
-style = "red italic"
+style = "green italic"
 
 [dart]
 symbol = " "
@@ -94,12 +118,10 @@ format = '\[[$symbol($version)]($style)\]'
 
 [c]
 symbol = " "
-commands = [ [ "cc", "--version" ], [ "gcc", "--version" ], [ "clang", "--version" ] ]
-detect_extensions = [ "**/src/**.c", "**/include/**.h" ]
-detect_files = [ "Makefile" ]
+commands = [["cc", "--version"], ["gcc", "--version"], ["clang", "--version"]]
+detect_extensions = ["**/src/**.c", "**/include/**.h"]
+detect_files = ["Makefile"]
 style = "bold blue"
-
-
 
 
 [docker_context]
@@ -123,7 +145,7 @@ disabled = false
 format = '\[[$symbol ($version)]($style)\]'
 symbol = "CMAKE"
 # symbol = " "
-style = "bold green"
+style = "italic green"
 
 [elm]
 symbol = " "
@@ -133,17 +155,17 @@ symbol = " "
 format = '\[[$symbol$branch]($style)\]'
 
 [git_status]
- conflicted = "⚔️ "
- ahead = "🏎️ 💨 ×${count} "
- behind = "🐢 ×${count} "
- diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count} "
- untracked = "🛤️  ×${count} "
- stashed = "📦 "
- modified = "📝 ×${count} "
- staged = "🗃️  ×${count} "
- renamed = "📛 ×${count} "
- deleted = "🗑️  ×${count} "
- style = "bright-white"
+conflicted = "⚔️ "
+ahead = "🏎️ 💨 ×${count} "
+behind = "🐢 ×${count} "
+diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count} "
+untracked = "🛤️  ×${count} "
+stashed = "📦 "
+modified = "📝 ×${count} "
+staged = "🗃️  ×${count} "
+renamed = "📛 ×${count} "
+deleted = "🗑️  ×${count} "
+style = "bright-white"
 #  format = "$all_status $ahead_behind"
 format = '([\[$all_status$ahead_behind\]]($style))'
 
@@ -184,7 +206,6 @@ symbol = " "
 
 [nix_shell]
 symbol = " "
-
 
 
 [perl]
@@ -232,10 +253,8 @@ detect_files = ["package.json", ".node-version"]
 detect_folders = ["node_modules"]
 
 
-
 [buf]
 symbol = " "
-
 
 
 [fossil_branch]
@@ -372,4 +391,3 @@ symbol = " "
 
 [rlang]
 symbol = "󰟔 "
-
