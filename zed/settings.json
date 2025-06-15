@@ -7,7 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "icon_theme": "Colored Zed Icons Theme Light",
+  "icon_theme": "Material Icon Theme",
   "features": {
     "edit_prediction_provider": "copilot"
   },
@@ -41,7 +41,7 @@
     }
   },
   "allow_rewrap": "anywhere",
-  "soft_wrap": "preferred_line_length",
+  "soft_wrap": "bounded",
   "preferred_line_length": 150,
 
   "base_keymap": "VSCode",
