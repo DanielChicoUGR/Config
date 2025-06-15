@@ -17,7 +17,7 @@ tmux/tmux.conf|symlink-R|.tmux.conf
 starship.toml|symlink|.config
 code-flags.conf|symlink|.config
 electron-flags.conf|symlink|.config
-spotify-launcher.conf|symlink|.config
+#spotify/spotify-launcher.conf|symlink|.config
 zed|symlink|.config
 #nvimChadrc|symlink-R|.config/nvim
 mynvim|symlink-R|.config/nvim
@@ -37,5 +37,3 @@ helperScripts/wofi-wallpaper-variety|symlink|.local/bin
 helperScripts/wofi-web-launcher|symlink|.local/bin
 helperScripts/wofi-wifi-menu|symlink|.local/bin
 helperScripts/show_keybinds|symlink|.local/bin
-
-
