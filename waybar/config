@@ -12,8 +12,8 @@
     "modules-left": [
         // "custom/rofi",
         "hyprland/workspaces",
-        "hyprland/submap",
-        //"idle_inhibitor",
+        // "hyprland/submap",
+        // "idle_inhibitor",
         "mpris",
         "temperature"
     ],
@@ -58,6 +58,7 @@
         "on-click": "~/.config/hypr/scripts/screenshot_full",
         "on-click-right": "~/.config/hypr/scripts/screenshot_area"
     },
+
     "clock": {
         "format": "  {:%H:%M   %e %b}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -67,7 +68,7 @@
         "format": "󰥔  {:%H:%M \n %e %b}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "today-format": "<b>{}</b>",
-        "on-click": "gsimplecal"
+        "on-click": "thunderbird -calendar"
 
     },
     "clock#1": {
@@ -85,6 +86,7 @@
         "tooltip": false,
         "on-click": "gsimplecal"
     },
+
     "temperature": {
         // "thermal-zone": 1,
         "interval": 4,
