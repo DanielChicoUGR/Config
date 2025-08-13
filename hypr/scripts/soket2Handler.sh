@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
-# Carga las funciones de gestion de wallpapers
-source "$(dirname "$0")/change_wallpaper_utils.sh"
-
+change_wallpeper() {
+    local pid=$(cat "/tmp/wallpaper_daemon.pid" 2>/dev/null)
+    if [[ -n "$pid" ]] ; then
+        kill -SIGUSR2 "$pid" 2>/dev/null
+        
+    else
+        return 1
+    fi
+}
 
 handle() {
     echo "$1" >> /tmp/hypr.log
@@ -14,3 +20,4 @@ handle() {
 }
 
 socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+

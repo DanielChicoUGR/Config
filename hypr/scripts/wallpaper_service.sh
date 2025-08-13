@@ -9,12 +9,6 @@ INTERVAL_SECONDS="$1"
 
 sleep 3
 
-# Verifica que el intervalo sea un número positivo
-# if ! [[ "$INTERVAL_MINUTES" =~ ^[0-9]+([.][0-9]+)?$ ]] || [ "$(echo "$INTERVAL_MINUTES <= 0" | bc)" -eq 1 ]; then
-#     echo "Error: El intervalo debe ser un número positivo."
-#     exit 1
-# fi
-
 # Convierte el intervalo a segundos
 # INTERVAL_SECONDS=$(echo "$INTERVAL_MINUTES * 60" | bc)
 

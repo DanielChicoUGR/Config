@@ -54,10 +54,8 @@ change_wallpaper() {
             WALLPAPER2=$(get_random_wallpaper "$wallpaper_dir")
         done
         if [ -n "$WALLPAPER" ] && [ -n "$WALLPAPER2" ]; then
-            swaybg -o "${OUTPUTS[0]}" -i "$WALLPAPER" -m fill &
-            notify-send --app-name "WALLPAPER CHANGER" --transient "Fondo cambiado en ${OUTPUTS[0]}" -i "$WALLPAPER"
-            swaybg -o "${OUTPUTS[1]}" -i "$WALLPAPER2" -m fill &
-            notify-send --app-name "WALLPAPER CHANGER" --transient "Fondo cambiado en ${OUTPUTS[1]}" -i "$WALLPAPER2"
+            swaybg -o "${OUTPUTS[0]}" -i "$WALLPAPER" -m fill -o "${OUTPUTS[1]}" -i "$WALLPAPER2" -m fill&
+            notify-send --app-name "WALLPAPER CHANGER" --transient "Fondo cambiado en ${#OUTPUTS[@]} monitores" -i "$WALLPAPER"
             echo "Dos monitores detectados. Fondos aplicados: ${OUTPUTS[0]}: $WALLPAPER1, ${OUTPUTS[1]}: $WALLPAPER2" >> "$LOG_FILE"
         else
             echo "Error: No se encontraron suficientes imágenes en $wallpaper_dir" >> "$LOG_FILE"
