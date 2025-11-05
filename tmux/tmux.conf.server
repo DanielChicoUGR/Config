@@ -1,0 +1,61 @@
+# DESIGN TWEAKS
+set -g mouse on
+
+# remap prefix from 'C-b' to 'C-a'
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# switch panes using Alt-arrow without prefix
+bind -n M-h select-pane -L
+bind -n M-j select-pane -D
+bind -n M-k select-pane -U
+bind -n M-l select-pane -R
+# bind -n M-
+
+
+# split panes using | and -
+bind | split-window -h
+bind - split-window -v
+unbind '"'
+unbind %
+
+set -g allow-passthrough on
+set -ga update-environment TERM
+set -ga update-environment TERM_PROGRAM
+
+set -g base-index 1
+set -g pane-base-index 1
+
+# reload config file (change file location to your the tmux.conf you want to use)
+bind r source-file ~/.tmux.conf
+
+
+set-option -g status-position top
+
+set -g default-terminal "tmux-256color"
+
+# Configure the catppuccin plugin
+set -g @catppuccin_flavor "frappe"
+set -g @catppuccin_window_status_style "rounded"
+
+
+# don't do anything when a 'bell' rings
+# don't do anything when a 'bell' rings
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'tmux-plugins/tmux-battery'
+set -g @plugin 'tmux-plugins/tmux-cpu'
+
+# Make the status line pretty and add some modules
+
+set -g status-right-length 100
+set -g status-left-length 100
+set -g status-left ""
+set -g status-right "#{E:@catppuccin_status_application}"
+set -agF status-right "#{E:@catppuccin_status_cpu}"
+set -ag status-right "#{E:@catppuccin_status_session}"
+set -ag status-right "#{E:@catppuccin_status_uptime}"
+set -agF status-right "#{E:@catppuccin_status_battery}"
+
+run '~/.tmux/plugins/tpm/tpm'
