@@ -10,7 +10,7 @@
 #     --width=300 --height=255 \
 #     --halign=center \
 #     --content_halign=center \
-#     --valign=center" 
+#     --valign=center"
 
 # # Entries
 # if $use_icons; then
@@ -20,7 +20,7 @@
 #     wallpaper="󰸉   Wallpaper"
 #     audio="󰋎   Audio Manager"
 #     web_launcher="󰜏  Web Launcher"
-    
+
 # else
 #     powermenu=" Powermenu"
 #     wifi="Wi-Fi"

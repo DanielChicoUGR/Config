@@ -24,8 +24,8 @@ mynvim|symlink-R|.config/nvim
 alacritty|symlink|.config
 .gitconfig|symlink|
 .condarc|symlink|
-batz|symlink|.config
-
+bat|symlink|.config
+yazi|symlink|.config
 #HelperScript
 helperScripts/wofi-mainmenu|symlink|.local/bin
 helperScripts/wofi-power-menu|symlink|.local/bin

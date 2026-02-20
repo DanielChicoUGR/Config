@@ -9,4 +9,4 @@
 program="$(basename $0)"
 args= "$@"
 
-podman run --rm -v $(pwd):/data mingc/latex $program $args
+docker run --rm -v $(pwd):/data dockershelf/latex $program  $args

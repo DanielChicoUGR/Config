@@ -1,3 +1,5 @@
 [user]
-	email = dachival@correo.ugr
+	email = dachival@correo.ugr.es
 	name = Daniel Chico
+[init]
+	defaultBranch = main

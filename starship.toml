@@ -5,7 +5,7 @@
 # [╰─cmd────❯](bold green)
 # """
 
-format = """$os$battery$directory$conda
+format = """$os$battery$directory$python$conda
 $sudo$character"""
 # continuation_prompt = "[∙](bright-black) "
 
@@ -19,7 +19,6 @@ $c\
 $cmake\
 $java\
 $golang\
-
 $meson\
 $jobs\
 $kotlin\
@@ -214,17 +213,19 @@ symbol = " "
 [php]
 symbol = " "
 
+
 [python]
 symbol = "🐍 "
-#pyenv_version_name = true
-format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
-# format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
+pyenv_version_name = true
+format = 'via [${symbol}python(\($virtualenv\)) ]($style)'
 style = "bold yellow"
 pyenv_prefix = "venv "
-python_binary = ["./venv/bin/python", "python", "python3", "python2"]
+python_binary = ["./venv/bin/python","./.venv/bin/python","./env/bin/python","./.env/bin/python", "python", "python3", "python2"]
 detect_extensions = ["py"]
 version_format = "v${raw}"
-disabled = true
+disabled = false
+detect_files = ["pyproject.toml", "requirements.txt", "Pipfile"] # Add common project files
+detect_folders = [".venv", "venv"] # Add common virtual env folder names
 
 [ruby]
 symbol = " "

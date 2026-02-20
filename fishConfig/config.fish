@@ -51,6 +51,8 @@ if test -d ~/Applications/depot_tools
     end
 end
 
+set -g JAVA_HOME ~/.jdks/ms-21.0.7
+
 
 ## Functions
 # Functions needed for !! and !$ https://github.com/oh-my-fish/plugin-bang-bang

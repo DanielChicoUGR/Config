@@ -7,73 +7,295 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "features": {
-    "edit_prediction_provider": "copilot"
+  "show_edit_predictions": true,
+  "unnecessary_code_fade": 0.5,
+  "bottom_dock_layout": "left_aligned",
+
+  "git_panel": {
+    "sort_by_path": true,
   },
-  "assistant": {
+  "agent": {
+    "favorite_models": [
+      {
+        "provider": "copilot_chat",
+        "model": "claude-sonnet-4.5",
+      },
+    ],
+    "inline_assistant_model":{
+      "provider": "copilot_chat",
+      "model": "gpt-5-mini",
+    },
     "always_allow_tool_actions": true,
+    "use_modifier_to_send": true,
+    "default_profile": "ask",
     "default_model": {
       "provider": "copilot_chat",
-      "model": "gpt-4o"
+      "model": "claude-sonnet-4.6",
     },
-    "version": "2"
+    "model_parameters": [],
+    "inline_alternatives": [
+      {
+        "provider": "copilot_chat",
+        "model": "claude-haiku-4.5",
+      },
+    ],
+    "inline_assistant_use_streaming_tools": true,
   },
-  "base_keymap": "VSCode",
-  "vim_mode": false,
-  "ui_font_size": 14,
-  "buffer_font_size": 14,
+  "pane_split_direction_vertical": "right",
+
+  "context_servers": {
+    "shadcn": {
+      "enabled": true,
+      "command": "bunx",
+      "args": ["--bun", "shadcn@latest", "mcp"],
+    },
+    "Astro docs": {
+      "enabled": true,
+      "command": "bunx",
+      "args": ["--bun", "mcp-remote", "https://mcp.docs.astro.build/mcp"],
+    },
+    "mcp-server-context7": {
+      "enabled": true,
+      "settings": {
+        "context7_api_key": "ctx7sk-de573e61-3b6f-437c-a0fd-2cc34f58718d",
+      },
+    },
+  },
+  "ssh_connections": [
+    {
+      "host": "hmbcentral.live",
+      "username": "dachival",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/home/dachival/serverComposes"],
+        },
+      ],
+    },
+    {
+      "host": "192.168.1.129",
+      "username": "dachival",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/home/dachival/foto2video"],
+        },
+      ],
+      "nickname": "HomeServer",
+    },
+  ],
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Macchiato",
+    "dark": "Material Icon Theme",
+  },
+  "features": {
+    "edit_prediction_provider": "copilot",
+  },
+  "jupyter": {
+    "enabled": true,
+    "kernel_selections": {},
+  },
+  "file_types": {
+    "C": ["c", "h"],
+  },
+  "allow_rewrap": "anywhere",
+  "soft_wrap": "bounded",
+  "preferred_line_length": 150,
+
+  "ui_font_size": 15,
+  "ui_font_family": "IosevkaTerm Nerd Font",
+  "buffer_font_size": 15,
+  "buffer_font_family": "Inconsolata Nerd Font",
+  "tabs": {
+    "close_position": "right",
+    "file_icons": false,
+    "git_status": false,
+    "activate_on_close": "history",
+    "show_close_button": "hover",
+    "show_diagnostics": "off",
+  },
   "theme": {
     "mode": "system",
-    "light": "One Dark",
-    "dark": "One Dark"
+    "light": "Catppuccin Macchiato",
+    "dark": "Catppuccin Mocha",
   },
+  
   "languages": {
-    "LaTeX": {
+    "C++": {
+      "format_on_save": "on",
+
+      "formatter": "language_server",
+      "use_autoclose": true,
+      "enable_language_server": true,
+      "show_completion_documentation": true,
+      "show_wrap_guides": true,
       
     },
-    "C++": {
-      
-    }
+    "C": {
+      "format_on_save": "on",
+      "tab_size": 1,
+      "formatter": "language_server",
+      "use_autoclose": true,
+      "show_completion_documentation": true,
+      "show_wrap_guides": true,
+    },
+    "Astro": {
+      "enable_language_server": true,
+      "formatter": "prettier",
+      "show_completion_documentation": true,
+    },
+    "Python": {
+      "enable_language_server": true,
+      "language_servers": ["ty"],
+      "format_on_save": "on",
+      "formatter": "auto",
+      "inlay_hints": {
+        "enabled": true,
+        "show_background": true,
+      },
+      "show_completion_documentation": true,
+    },
+    "JavaScript": {
+      "enable_language_server": true,
+      "formatter": "prettier",
+      "show_completion_documentation": true,
+      "language_servers": ["typescript-language-server", "!vtsls", "..."],
+    },
+    "Java": {
+      "enable_language_server": true,
+      //"formatter": "prettier",
+      "show_completion_documentation": true,
+    },
+    "TypeScript": {
+      "enable_language_server": true,
+      "formatter": "prettier",
+      "show_completion_documentation": true,
+      "language_servers": ["typescript-language-server", "!vtsls", "..."],
+    },
+    "TSX": {
+      "enable_language_server": true,
+      "formatter": "prettier",
+      "show_completion_documentation": true,
+      "language_servers": ["typescript-language-server", "!vtsls", "..."],
+    },
+
+    "Rust": {
+      "enable_language_server": true,
+      "show_completion_documentation": true,
+    },
+    "Markdown": {
+      "show_edit_predictions": true,
+      "enable_language_server": true,
+      "formatter": "prettier",
+      "show_completion_documentation": true,
+    },
+    "YAML": {
+      "enable_language_server": true,
+      "formatter": "prettier",
+      "show_completion_documentation": true,
+    },
   },
+  "lsp": {
+    "vtsls": {
+      "settings": {
+        // For JavaScript:
+        "javascript": {
+          "inlayHints": {
+            "parameterNames": {
+              "enabled": "all",
+              "suppressWhenArgumentMatchesName": false,
+            },
+            "parameterTypes": {
+              "enabled": true,
+            },
+            "variableTypes": {
+              "enabled": true,
+              "suppressWhenTypeMatchesName": true,
+            },
+            "propertyDeclarationTypes": {
+              "enabled": true,
+            },
+            "functionLikeReturnTypes": {
+              "enabled": true,
+            },
+            "enumMemberValues": {
+              "enabled": true,
+            },
+          },
+        },
+        // For TypeScript:
+        "typescript": {
+          "inlayHints": {
+            "parameterNames": {
+              "enabled": "all",
+              "suppressWhenArgumentMatchesName": false,
+            },
+            "parameterTypes": {
+              "enabled": true,
+            },
+            "variableTypes": {
+              "enabled": true,
+              "suppressWhenTypeMatchesName": true,
+            },
+            "propertyDeclarationTypes": {
+              "enabled": true,
+            },
+            "functionLikeReturnTypes": {
+              "enabled": true,
+            },
+            "enumMemberValues": {
+              "enabled": true,
+            },
+          },
+        },
+      },
+    },
+  },
+
+  // "language_servers": ,
   "auto_update": true,
-  "auto_update_channel": "stable",
 
   "format_on_save": "on",
   "autosave": {
     "after_delay": {
-      "milliseconds": 500
-    }
+      "milliseconds": 500,
+    },
   },
+
   "use_autoclose": true,
   "git": {
     "git_gutter": null,
     "gutter_debounce": null,
-    "inline_blame": null
+    "inline_blame": null,
   },
   "inlay_hints": {
     "enabled": true,
-    "show_type_hints": true,
+    "show_type_hints": false,
     "show_parameter_hints": true,
-    "show_other_hints": true
+    "show_other_hints": false,
   },
 
   "edit_predictions": {
-    "disabled_globs": [
-      "**/.env*",
-      "**/*.pem",
-      "**/*.key",
-      "**/*.cert",
-      "**/*.crt",
-      "**/secrets.yml"
-    ]
+    "mode": "subtle",
+    "disabled_globs": ["**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/secrets.yml"],
   },
 
-  "buffer_font_fallbacks": ["Iosevka Nerd Font"],
-
+  "agent_servers": {
+    "gemini": {
+      "default_config_options": {
+        "aggent_skills": "true",
+      },
+    },
+  },
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
-  
-  
 }
+
+// bunx skills add https://github.com/wshobson/agents -g --all
+// bunx skills add https://github.com/othmanadi/planning-with-files -g --all
+// bunx skills add https://github.com/anthropics/claude-code -g --all
+// bunx skills add https://github.com/softaworks/agent-toolkit -g --all
+// bunx skills add https://github.com/better-auth/skills -g --all
