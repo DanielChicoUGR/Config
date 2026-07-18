@@ -1,144 +1,201 @@
+﻿## Source from conf.d before our fish config
 
 
-set fish_greeting                                 # Supresses fish's intro message
-set TERM "xterm-256color"                         # Sets the terminal type
+## Set values
+## Run fastfetch as welcome message
+# function fish_greeting
+#     fastfetch
+# end
+
+# Format man pages
+set -x MANROFFOPT -c
+set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+
+# Set settings for https://github.com/franciscolourenco/done
+set -U __done_min_cmd_duration 10000
+set -U __done_notification_urgency_level low
+
+## Environment setup
+# Apply .profile: use this to put fish compatible .profile stuff in
+if test -f ~/.fish_profile
+    source ~/.fish_profile
+end
+
+# Add ~/.local/bin to PATH
+if test -d ~/.local/bin
+    if not contains -- ~/.local/bin $PATH
+        set -p PATH ~/.local/bin
+    end
+end
 
 
-### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
-function fish_user_key_bindings
-    fish_default_key_bindings
-end 
+if test -d ~/go/bin
+    if not contains -- ~/go/bin $PATH
+        set -p PATH ~/go/bin
+    end
+end
 
-
-### AUTOCOMPLETE AND HIGHLIGHT COLORS ###
-
-set fish_color_normal brcyan
-set fish_color_autosuggestion '#7d7d7d'
-set fish_color_command brcyan
-set fish_color_error '#ff6c6b'
-set fish_color_param brcyan
+if test -d /home/dachival/.local/share/node/bin
+    if not contains -- /home/dachival/.local/share/node/bin $PATH
+        set -p PATH /home/dachival/.local/share/node/bin
+    end
+end
 
 
 
-### FUNCTIONS ###
+if test -d ~/.cargo/bin
+    if not contains -- ~/.cargo/bin $PATH
+        set -p PATH ~/.cargo/bin
+    end
+end
 
-# Functions needed for !! and !$
+
+if test -d ~/.local/share/flutter/bin
+    if not contains -- ~/.local/share/flutter/bin $PATH
+        set -p PATH ~/.local/share/flutter/bin
+    end
+end
+
+
+
+# Add depot_tools to PATH
+if test -d ~/Applications/depot_tools
+    if not contains -- ~/Applications/depot_tools $PATH
+        set -p PATH ~/Applications/depot_tools
+    end
+end
+
+# set -g JAVA_HOME ~/.jdks/ms-21.0.7
+
+
+## Functions
+# Functions needed for !! and !$ https://github.com/oh-my-fish/plugin-bang-bang
 function __history_previous_command
-  switch (commandline -t)
-  case "!"
-    commandline -t $history[1]; commandline -f repaint
-  case "*"
-    commandline -i !
-  end
+    switch (commandline -t)
+        case "!"
+            commandline -t $history[1]
+            commandline -f repaint
+        case "*"
+            commandline -i !
+    end
 end
 
 function __history_previous_command_arguments
-  switch (commandline -t)
-  case "!"
-    commandline -t ""
-    commandline -f history-token-search-backward
-  case "*"
-    commandline -i '$'
-  end
-end
-
-# The bindings for !! and !$
-if [ "$fish_key_bindings" = "fish_vi_key_bindings" ];
-  bind -Minsert ! __history_previous_command
-  bind -Minsert '$' __history_previous_command_arguments
-else
-  bind ! __history_previous_command
-  bind '$' __history_previous_command_arguments
-end
-
-
-### ALIASES ###
-# navigation
-alias ..='cd ..'
-alias ...='cd ../..'
-alias .3='cd ../../..'
-alias .4='cd ../../../..'
-alias .5='cd ../../../../..'
-
-
-# # Changing "ls" to "exa"
-# alias ls='exa -al --color=always --group-directories-first' # my preferred listing
-# alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-# alias ll='exa -l --color=always --group-directories-first'  # long format
-# alias lt='exa -aT --color=always --group-directories-first' # tree listing
-# alias l.='exa -a | egrep "^\."'
-
-
-
-
-# Alias LS
-
-alias ll='exa --icons --color=always -lh --group-directories-first'
-alias la='exa --icons --color=always -lgha --group-directories-first'
-alias l='exa --icons --color=always --group-directories-first'
-alias lla='exa --icons --color=always -lha --group-directories-first'
-alias ls='exa --icons --color=always --group-directories-first'
-alias lt='exa --icons --color=always --tree'
-alias lta='exa -lgha --icons --color=always --tree'
-alias lld='exa --icons --color=always -lh -s modified'
-alias llad='exa --icons --color=always -lha -s modified'
-
-
-alias cat='batcat'
-alias icat="kitty +kitten icat"
-# alias remove_mysql_root='/home/dachival/Proyectos/Scripts/rm_mysql.sh'
-
-
-alias python='/usr/bin/python3'
-alias vim="/home/daniel/.appimage/neovim.appimage"
-alias emacs="macsclient -c -a 'emacs'"
-
-alias grub-update='sudo grub-mkconfig -o /boot/grub/grub.cfg'
-
-#git
-
-alias gitgraph="git log --all --decorate --oneline --graph"
-alias gitupdate="git fetch . && git pull"
-alias gitstat="git status"
-alias gitad="git add . "
-alias gitcom="git commit -m"
-
-
-#Refresh
-# alias refresh="source $HOME/.zshrc "
-
-#Convert Video
-alias convi="ffmpeg -i $1 -c:v libx264 -crf 25 $2"
-
-#launch android emulator
-alias emulator="$HOME/Android/Sdk/emulator/emulator"
-
-
-
-# fzf
-alias preview="fzf --preview='batcat --color=always --style=numbers --theme OneHalfDark {}' --preview-window=down"
-
-
-### SETTING THE STARSHIP PROMPT ###
-starship init fish | source
-
-# pnpm
-set -gx PNPM_HOME "/home/daniel/.local/share/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
-end
-# pnpm end
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-if test -f /home/daniel/miniconda3/bin/conda
-    eval /home/daniel/miniconda3/bin/conda "shell.fish" "hook" $argv | source
-else
-    if test -f "/home/daniel/miniconda3/etc/fish/conf.d/conda.fish"
-        . "/home/daniel/miniconda3/etc/fish/conf.d/conda.fish"
-    else
-        set -x PATH "/home/daniel/miniconda3/bin" $PATH
+    switch (commandline -t)
+        case "!"
+            commandline -t ""
+            commandline -f history-token-search-backward
+        case "*"
+            commandline -i '$'
     end
 end
-# <<< conda initialize <<<
 
+if [ "$fish_key_bindings" = fish_vi_key_bindings ]
+    bind -Minsert ! __history_previous_command
+    bind -Minsert '$' __history_previous_command_arguments
+else
+    bind ! __history_previous_command
+    bind '$' __history_previous_command_arguments
+end
+
+function y
+	set tmp (mktemp -t "yazi-cwd.XXXXXX")
+	yazi $argv --cwd-file="$tmp"
+	if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+		builtin cd -- "$cwd"
+	end
+	rm -f -- "$tmp"
+end
+
+# Fish command history
+function history
+    builtin history --show-time='%F %T '
+end
+
+function backup --argument filename
+    cp $filename $filename.bak
+end
+
+# Copy DIR1 DIR2
+function copy
+    set count (count $argv | tr -d \n)
+    if test "$count" = 2; and test -d "$argv[1]"
+        set from (echo $argv[1] | trim-right /)
+        set to (echo $argv[2])
+        command cp -r $from $to
+    else
+        command cp $argv
+    end
+end
+
+function connect_wifi
+    set argc (count $argv | tr -d \n)
+
+    if test (count $argv) -ne 2 and test (count $argv) -ne 1
+        echo "Uso: connect_wifi <SSID> <PASSWORD>"
+        echo "O"
+        echo "Uso: connect_wifi <SSID>"
+        return 1
+    end
+    if test "$argc" = 2
+        set ssid $argv[1]
+        set password $argv[2]
+        nmcli dev wifi connect "$ssid" password "$password"
+    else
+        set ssid $argv[1]
+        nmcli dev wifi connect "$ssid" --ask
+    end
+    return $status
+end
+
+set -g HeadSetMAC F8:5C:7D:5D:12:3F
+
+## Useful aliases
+# Replace ls with eza
+alias ls='eza -alb --color=always --group-directories-first --icons' # preferred listing
+alias lla='eza -alb --color=always --group-directories-first --icons' # preferred listing
+alias la='eza -ab --color=always --group-directories-first --icons' # all files and dirs
+alias ll='eza -lb --color=always --group-directories-first --icons' # long formatb
+alias lt='eza -aTb --color=always --group-directories-first --icons' # tree listing
+alias l.="eza -a | grep -e '^\.'" # show only dotfiles
+
+# Common use
+alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+alias tarnow='tar -acf '
+alias untar='tar -zxvf '
+alias wget='wget -c '
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias hw='hwinfo --short' # Hardware Info
+alias big="expac -H M '%m\t%n' | sort -h | nl" # Sort installed packages according to size in MB
+alias gitpkg='pacman -Q | grep -i "\-git" | wc -l' # List amount of -git packages
+alias update='sudo pacman -Syu'
+
+# Get fastest mirrors
+alias mirror="sudo cachyos-rate-mirrors"
+
+# Help people new to Arch
+alias apt='man pacman'
+alias apt-get='man pacman'
+alias please='sudo'
+alias tb='nc termbin.com 9999'
+
+# Cleanup orphaned packages
+alias cleanup='sudo pacman -Rns (pacman -Qtdq)'
+
+# Get the error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+# Recent installed packages
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"

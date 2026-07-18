@@ -754,3 +754,7 @@ exts = [
   { name = "liquid", text = "", fg = "#a6da95" },
   { name = "zip", text = "", fg = "#eed49f" },
 ]
+
+[flavor]
+dark  = "noctalia"
+light = "noctalia"

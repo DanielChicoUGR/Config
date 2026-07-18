@@ -16,7 +16,7 @@ micro|symlink|.config
 #latex/latex|symlink-R|.local/bin/latexmk
 
 
-niri|symlink|.config
+#niri|symlink|.config
 
 tmux/tmux.conf|symlink-R|.tmux.conf
 starship.toml|symlink|.config

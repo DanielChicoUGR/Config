@@ -7,18 +7,37 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "cli_default_open_behavior": "existing_window",
+  "agent_buffer_font_size": 14.0,
+  "agent_ui_font_size": 14.0,
+  "ui_font_weight": 250.0,
+  "buffer_font_weight": 100.0,
+  "document_symbols": "on",
+  "semantic_tokens": "combined",
+  "proxy": "",
+  "project_panel": {
+    "dock": "right",
+  },
+  "outline_panel": {
+    "dock": "right",
+  },
+  "collaboration_panel": {
+    "dock": "right",
+  },
   "show_edit_predictions": true,
   "unnecessary_code_fade": 0.5,
   "bottom_dock_layout": "left_aligned",
 
   "git_panel": {
+    "dock": "right",
     "sort_by_path": true,
   },
   "agent": {
+    "dock": "left",
     "tool_permissions": {
       "default": "allow",
     },
-    "play_sound_when_agent_done": true,
+    "play_sound_when_agent_done": "always",
     "favorite_models": [
       {
         "provider": "copilot_chat",
@@ -30,10 +49,10 @@
       "model": "gpt-5-mini",
     },
     "use_modifier_to_send": true,
-    "default_profile": "ask",
+    "default_profile": "write",
     "default_model": {
       "provider": "copilot_chat",
-      "model": "claude-sonnet-4.5",
+      "model": "gpt-5.3-codex",
     },
     "model_parameters": [],
     "inline_alternatives": [
@@ -47,6 +66,27 @@
   "pane_split_direction_vertical": "right",
 
   "context_servers": {
+    "some-mcp-server": {
+      "enabled": true,
+      "remote": false,
+      "command": "bunx @modelcontextprotocol/server-postgres postgresql://postgres:change-me@localhost:5432/sunergy",
+      "args": [],
+      "env": {}
+    },
+    "postgres-context-server": {
+      "enabled": true,
+      "remote": false,
+      "settings": {
+        "database_url": "postgresql://postgres:change-me@localhost:5432/sunergy"
+      }
+    },
+    "mcp-server-context7": {
+      "enabled": true,
+      "remote": false,
+      "settings": {
+        "context7_api_key": ""
+      }
+    },
     "shadcn": {
       "enabled": true,
       "command": "bunx",
@@ -56,12 +96,6 @@
       "enabled": true,
       "command": "bunx",
       "args": ["--bun", "mcp-remote", "https://mcp.docs.astro.build/mcp"],
-    },
-    "mcp-server-context7": {
-      "enabled": true,
-      "settings": {
-        "context7_api_key": "ctx7sk-de573e61-3b6f-437c-a0fd-2cc34f58718d",
-      },
     },
   },
   "ssh_connections": [
@@ -103,10 +137,14 @@
   "soft_wrap": "bounded",
   "preferred_line_length": 150,
 
-  "ui_font_size": 15,
-  "ui_font_family": "IosevkaTerm Nerd Font",
-  "buffer_font_size": 15,
-  "buffer_font_family": "Inconsolata Nerd Font",
+  "ui_font_size": 15.0,
+  "ui_font_family": "JetBrainsMono Nerd Font Mono",
+  "buffer_font_size": 14.0,
+  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
+  "terminal": {
+    "font_family": "Iosevka Nerd Font",
+    "font_fallbacks": ["JetBrainsMono Nerd Font Mono"],
+  },
   "tabs": {
     "close_position": "right",
     "file_icons": false,
@@ -250,6 +288,20 @@
         },
       },
     },
+    "texlab": {
+      "initialization_options": {
+        "build": {
+          "onSave": true,
+          "executable": "latexmk",
+          "args": ["-pdf", "-interaction=nonstopmode", "-synctex=1", "-shell-escape", "-output-directory=build", "TFG.tex"],
+          "forwardSearchAfter": false,
+        },
+        "chktex": {
+          "onEdit": true,
+          "onOpen": true,
+        },
+      },
+    },
   },
 
   // "language_servers": ,
@@ -282,10 +334,29 @@
   },
 
   "agent_servers": {
-    "gemini": {
+    "codex-acp": {
       "default_config_options": {
-        "aggent_skills": "true",
+        "model": "gpt-5.4-mini"
       },
+      "type": "registry"
+    },
+    "cursor": {
+      "type": "registry"
+    },
+    "claude-acp": {
+      "default_config_options": {
+        "model": "haiku",
+        "mode": "default",
+        "effort": "high"
+      },
+      "type": "registry",
+    },
+    "gemini": {
+      "default_mode": "default",
+      "type": "registry",
+    },
+    "github-copilot-cli": {
+      "type": "registry",
     },
   },
   "telemetry": {

@@ -144,8 +144,3 @@ import = [
   # "~/.config/alacritty/catppuccin-mocha.toml"
     "~/.config/alacritty/themes/noctalia.toml",
 ]
-
-[[keyboard.bindings]]
-key = "Return"
-mods = "Shift"
-chars = "\u001B\r"

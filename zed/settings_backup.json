@@ -7,30 +7,44 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "project_panel": {
+    "dock": "right",
+  },
+  "outline_panel": {
+    "dock": "right",
+  },
+  "collaboration_panel": {
+    "dock": "right",
+  },
   "show_edit_predictions": true,
   "unnecessary_code_fade": 0.5,
   "bottom_dock_layout": "left_aligned",
 
   "git_panel": {
+    "dock": "right",
     "sort_by_path": true,
   },
   "agent": {
+    "dock": "left",
+    "tool_permissions": {
+      "default": "allow",
+    },
+    "play_sound_when_agent_done": true,
     "favorite_models": [
       {
         "provider": "copilot_chat",
         "model": "claude-sonnet-4.5",
       },
     ],
-    "inline_assistant_model":{
+    "inline_assistant_model": {
       "provider": "copilot_chat",
       "model": "gpt-5-mini",
     },
-    "always_allow_tool_actions": true,
     "use_modifier_to_send": true,
-    "default_profile": "ask",
+    "default_profile": "write",
     "default_model": {
       "provider": "copilot_chat",
-      "model": "claude-sonnet-4.6",
+      "model": "gpt-5.3-codex",
     },
     "model_parameters": [],
     "inline_alternatives": [
@@ -89,9 +103,6 @@
     "light": "Catppuccin Macchiato",
     "dark": "Material Icon Theme",
   },
-  "features": {
-    "edit_prediction_provider": "copilot",
-  },
   "jupyter": {
     "enabled": true,
     "kernel_selections": {},
@@ -104,9 +115,12 @@
   "preferred_line_length": 150,
 
   "ui_font_size": 15,
-  "ui_font_family": "IosevkaTerm Nerd Font",
+  "ui_font_family": "JetBrainsMono Nerd Font Mono",
   "buffer_font_size": 15,
-  "buffer_font_family": "Inconsolata Nerd Font",
+  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
+  "terminal": {
+    "font_fallbacks": ["JetBrainsMono Nerd Font Mono"],
+  },
   "tabs": {
     "close_position": "right",
     "file_icons": false,
@@ -120,7 +134,7 @@
     "light": "Catppuccin Macchiato",
     "dark": "Catppuccin Mocha",
   },
-  
+
   "languages": {
     "C++": {
       "format_on_save": "on",
@@ -130,7 +144,6 @@
       "enable_language_server": true,
       "show_completion_documentation": true,
       "show_wrap_guides": true,
-      
     },
     "C": {
       "format_on_save": "on",
@@ -251,6 +264,20 @@
         },
       },
     },
+    "texlab": {
+      "initialization_options": {
+        "build": {
+          "onSave": true,
+          "executable": "latexmk",
+          "args": ["-pdf", "-interaction=nonstopmode", "-synctex=1", "-shell-escape", "-output-directory=build", "TFG.tex"],
+          "forwardSearchAfter": false,
+        },
+        "chktex": {
+          "onEdit": true,
+          "onOpen": true,
+        },
+      },
+    },
   },
 
   // "language_servers": ,
@@ -277,15 +304,20 @@
   },
 
   "edit_predictions": {
+    "provider": "copilot",
     "mode": "subtle",
     "disabled_globs": ["**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/secrets.yml"],
   },
 
   "agent_servers": {
+    "claude-acp": {
+      "type": "registry",
+    },
     "gemini": {
-      "default_config_options": {
-        "aggent_skills": "true",
-      },
+      "type": "registry",
+    },
+    "github-copilot-cli": {
+      "type": "registry",
     },
   },
   "telemetry": {
